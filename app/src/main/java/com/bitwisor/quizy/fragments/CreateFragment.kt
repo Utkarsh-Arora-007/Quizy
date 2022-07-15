@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
@@ -19,7 +20,6 @@ import com.bitwisor.quizy.R
 import com.bitwisor.quizy.databinding.FragmentCreateBinding
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
-import kotlin.random.Random.Default.nextInt
 
 
 class CreateFragment : Fragment() {
@@ -36,6 +36,7 @@ class CreateFragment : Fragment() {
     var fromflag = false
     var toflag = false
     var quizId = 0
+    var quiz_duration=0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,7 +47,19 @@ class CreateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        quizId = RandomUnrepeated(1000,9999).nextInt()
+        quizId = (1000..9999).random()
+        binding.createQuizBtn.setOnClickListener {
+            val unique_code=quizId.toString()
+
+            val bundle = Bundle()
+            bundle.putString("uniqueId",unique_code)
+
+            val fragment= UniqueCode()
+            fragment.arguments=bundle
+            fragmentManager?.beginTransaction()?.replace(R.id.main_navgraph,fragment)?.commit()
+            findNavController().navigate(R.id.action_createFragment_to_uniqueCode,bundle)
+
+        }
         binding.createBackbtn.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -187,32 +200,30 @@ class CreateFragment : Fragment() {
 
         binding.addQbtn.setOnClickListener {
             var numberOfQuestion = binding.quizNumberofquestionInputEdittext.text.toString()
-            var quizName = binding.quizNameInputEdittext.text.toString()
-            if(!numberOfQuestion.isNullOrEmpty() and !quizName.isNullOrEmpty()){
+            if(!numberOfQuestion.isNullOrEmpty()){
                 var bundle = Bundle()
                 bundle.putInt("NoOfQuestion",binding.quizNumberofquestionInputEdittext.text.toString().toInt())
                 bundle.putInt("QuizId",quizId)
-                bundle.putString("QuizName",quizName)
                 findNavController().navigate(R.id.action_createFragment_to_addQuestionsFragment,bundle)
             }
             else{
-                Snackbar.make(view,"Please enter all the above fields",Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(view,"Please Enter Number Of Questions",Snackbar.LENGTH_SHORT).show()
             }
 
         }
-        binding.createQuizBtn.setOnClickListener {
-            if (fromflag){
-                if (toflag){
-
-                }
-                else{
-                    Toast.makeText(requireContext(),"Please Enter To Date",Toast.LENGTH_SHORT).show()
-                }
-            }
-            else{
-                Toast.makeText(requireContext(),"Please Enter From Date",Toast.LENGTH_SHORT).show()
-            }
-        }
+//        binding.createQuizBtn.setOnClickListener {
+//            if (fromflag){
+//                if (toflag){
+//
+//                }
+//                else{
+//                    Toast.makeText(requireContext(),"Please Enter To Date",Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//            else{
+//                Toast.makeText(requireContext(),"Please Enter From Date",Toast.LENGTH_SHORT).show()
+//            }
+//        }
 
     }
 
@@ -286,14 +297,5 @@ class CreateFragment : Fragment() {
         toMonth = month
         toYear = year
     }
-    class RandomUnrepeated(from: Int, to: Int) {
-        private val numbers = (from..to).toMutableList()
-        fun nextInt(): Int {
-            val index = kotlin.random.Random.nextInt(numbers.size)
-            val number = numbers[index]
-            numbers.removeAt(index)
 
-            return number
-        }
-    }
 }
