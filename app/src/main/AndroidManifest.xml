@@ -14,6 +14,15 @@
         android:theme="@style/Theme.Quizy"
         tools:targetApi="31">
         <activity
+            android:name=".NoInternetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".QuizActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
