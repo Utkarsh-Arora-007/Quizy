@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_createFragment_to_addQuestionsFragment"
             app:destination="@id/addQuestionsFragment" />
+        <action
+            android:id="@+id/action_createFragment_to_uniqueCode"
+            app:destination="@id/uniqueCode" />
     </fragment>
     <fragment
         android:id="@+id/joinFragment"
@@ -34,4 +37,8 @@
         android:id="@+id/addQuestionsFragment"
         android:name="com.bitwisor.quizy.fragments.AddQuestionsFragment"
         android:label="AddQuestionsFragment" />
+    <fragment
+        android:id="@+id/uniqueCode"
+        android:name="com.bitwisor.quizy.fragments.UniqueCode"
+        android:label="UniqueCode" />
 </navigation>
