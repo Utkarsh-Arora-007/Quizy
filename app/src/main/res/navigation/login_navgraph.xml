@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/login_navgraph"
+    app:startDestination="@id/continueWithGoogleFragment">
+
+    <fragment
+        android:id="@+id/continueWithGoogleFragment"
+        android:name="com.bitwisor.quizy.fragments.loginFragments.ContinueWithGoogleFragment"
+        android:label="ContinueWithGoogleFragment" />
+</navigation>
