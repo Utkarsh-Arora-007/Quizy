@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.bitwisor.quizy.JoinActivity
 import com.bitwisor.quizy.LoginActivity
 import com.bitwisor.quizy.R
 import com.bitwisor.quizy.databinding.FragmentHomeBinding
@@ -41,7 +42,9 @@ class HomeFragment : Fragment() {
                 }
             }
             joinQuizBtn.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_joinFragment)
+                val i = Intent(requireActivity(),JoinActivity::class.java)
+                startActivity(i)
+                requireActivity().finish()
             }
         }
     }

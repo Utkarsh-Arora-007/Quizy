@@ -12,9 +12,7 @@
         <action
             android:id="@+id/action_homeFragment_to_createFragment"
             app:destination="@id/createFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_joinFragment"
-            app:destination="@id/joinFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/createFragment"
@@ -28,11 +26,6 @@
             android:id="@+id/action_createFragment_to_uniqueCode"
             app:destination="@id/uniqueCode" />
     </fragment>
-    <fragment
-        android:id="@+id/joinFragment"
-        android:name="com.bitwisor.quizy.fragments.JoinFragment"
-        android:label="fragment_join"
-        tools:layout="@layout/fragment_join" />
     <fragment
         android:id="@+id/addQuestionsFragment"
         android:name="com.bitwisor.quizy.fragments.AddQuestionsFragment"

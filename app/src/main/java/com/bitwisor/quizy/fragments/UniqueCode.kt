@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.bitwisor.quizy.R
-import com.bitwisor.quizy.databinding.FragmentCreateBinding
 import com.bitwisor.quizy.databinding.FragmentUniqueCodeBinding
 
 

@@ -106,6 +106,7 @@ class AddQuestionsFragment : Fragment() {
                             binding.progressBar1.progress = questionNo
                             questionNo++
                             binding.questionNumber.text = "Q.No. $questionNo"
+                            // correct option options me se he hona chahiye
                             if(questionNo>totalQuestions){
                                 binding.questionNumber.text = "Done"
                                 binding.donelottie.visibility = View.VISIBLE
