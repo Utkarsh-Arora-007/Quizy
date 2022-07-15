@@ -19,6 +19,7 @@ import com.bitwisor.quizy.R
 import com.bitwisor.quizy.databinding.FragmentCreateBinding
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
+import kotlin.random.Random.Default.nextInt
 
 
 class CreateFragment : Fragment() {
@@ -45,7 +46,7 @@ class CreateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        quizId = (1000..9999).random()
+        quizId = RandomUnrepeated(1000,9999).nextInt()
         binding.createBackbtn.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -186,14 +187,16 @@ class CreateFragment : Fragment() {
 
         binding.addQbtn.setOnClickListener {
             var numberOfQuestion = binding.quizNumberofquestionInputEdittext.text.toString()
-            if(!numberOfQuestion.isNullOrEmpty()){
+            var quizName = binding.quizNameInputEdittext.text.toString()
+            if(!numberOfQuestion.isNullOrEmpty() and !quizName.isNullOrEmpty()){
                 var bundle = Bundle()
                 bundle.putInt("NoOfQuestion",binding.quizNumberofquestionInputEdittext.text.toString().toInt())
                 bundle.putInt("QuizId",quizId)
+                bundle.putString("QuizName",quizName)
                 findNavController().navigate(R.id.action_createFragment_to_addQuestionsFragment,bundle)
             }
             else{
-                Snackbar.make(view,"Please Enter Number Of Questions",Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(view,"Please enter all the above fields",Snackbar.LENGTH_SHORT).show()
             }
 
         }
@@ -283,5 +286,14 @@ class CreateFragment : Fragment() {
         toMonth = month
         toYear = year
     }
+    class RandomUnrepeated(from: Int, to: Int) {
+        private val numbers = (from..to).toMutableList()
+        fun nextInt(): Int {
+            val index = kotlin.random.Random.nextInt(numbers.size)
+            val number = numbers[index]
+            numbers.removeAt(index)
 
+            return number
+        }
+    }
 }

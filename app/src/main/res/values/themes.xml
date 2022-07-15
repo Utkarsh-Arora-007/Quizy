@@ -16,4 +16,13 @@
     </style>
 
     <color name="secondary_maincolor">#FFC2C2</color>
+
+    <style name="Theme.Quizy.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Quizy.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Quizy.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

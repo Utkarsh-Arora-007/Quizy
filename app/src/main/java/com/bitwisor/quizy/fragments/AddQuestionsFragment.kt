@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.LoginActivity
 import com.bitwisor.quizy.R
 import com.bitwisor.quizy.databinding.FragmentAddQuestionsBinding
@@ -24,9 +25,10 @@ class AddQuestionsFragment : Fragment() {
     var option3 =""
     var option4 =""
     var correctOption =""
-    var questionNumber =1
+    var questionNo =1
     var totalQuestions = 0
     var quizId = 0
+    var quizName=""
     lateinit var database: FirebaseDatabase
     lateinit var firebaseAuth:FirebaseAuth
     override fun onCreateView(
@@ -40,22 +42,36 @@ class AddQuestionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.mprogress.visibility = View.GONE
+        binding.donelottie.visibility = View.GONE
         var bundle = this.arguments
         if(bundle!=null){
             totalQuestions = bundle.getInt("NoOfQuestion")
             quizId = bundle.getInt("QuizId")
+            quizName = bundle.getString("QuizName","No Name")
         }
-        binding.questionNumber.text = "Q.No. $questionNumber"
-        binding.quizRoomCode.text = "$quizId"
+        binding.yourlastscoretxt.visibility = View.INVISIBLE
+        binding.yourscore.visibility = View.INVISIBLE
+        binding.questionNumber.text = "Q.No. $questionNo"
+        binding.quizRoomCode.text = "Quiz Code : $quizId"
+        binding.quizNametxt.text = "$quizName"
         firebaseAuth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
+        binding.progressBar1.progress = 0
+        binding.progressBar1.max = totalQuestions
         if (firebaseAuth.currentUser==null){
             val i = Intent(requireActivity(),LoginActivity::class.java)
             startActivity(i)
             requireActivity().finish()
         }
         binding.addnextQuestionbtn.setOnClickListener {
-            binding.questionNumber.text = "Q.No. $questionNumber"
+            val qnu = questionNo
+            if(qnu>=totalQuestions){
+                binding.questionNumber.text = "Done"
+                binding.addnextQuestionbtn.visibility = View.GONE
+                binding.doneQuestionAddingbtn.visibility = View.VISIBLE
+                binding.qna.visibility = View.INVISIBLE
+                binding.donelottie.visibility = View.VISIBLE
+            }
             question = binding.questionedittxt.text.toString()
             option1 = binding.optionAedittxt.text.toString()
             option2 = binding.optionBedittxt.text.toString()
@@ -75,22 +91,32 @@ class AddQuestionsFragment : Fragment() {
                     .child("MyQuiz")
                     .child(quizId.toString())
                     .child("Questions")
-                    .child(questionNumber.toString())
+                    .child(qnu.toString())
                     .setValue(questionData)
                     .addOnCompleteListener {
                         if (it.isSuccessful){
                             binding.mprogress.visibility = View.GONE
-                            Snackbar.make(view,"Question $questionNumber added",Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(view,"Question $qnu added",Snackbar.LENGTH_SHORT).show()
                             binding.questionedittxt.text.clear()
                             binding.optionAedittxt.text.clear()
                             binding.optionBedittxt.text.clear()
                             binding.optionCedittxt.text.clear()
                             binding.optionDedittxt.text.clear()
                             binding.correctOptiontxt.text.clear()
+                            binding.progressBar1.progress = questionNo
+                            questionNo++
+                            binding.questionNumber.text = "Q.No. $questionNo"
+                            if(questionNo>totalQuestions){
+                                binding.questionNumber.text = "Done"
+                                binding.donelottie.visibility = View.VISIBLE
+                                binding.addnextQuestionbtn.visibility = View.GONE
+                                binding.doneQuestionAddingbtn.visibility = View.VISIBLE
+                                binding.qna.visibility = View.INVISIBLE
+                            }
                         }
                         else{
                             binding.mprogress.visibility = View.GONE
-                            Snackbar.make(view,"Question $questionNumber Add Failed Please Retry",Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(view,"Question $questionNo Add Failed Please Retry",Snackbar.LENGTH_SHORT).show()
 
                         }
                     }.addOnFailureListener {
@@ -102,7 +128,10 @@ class AddQuestionsFragment : Fragment() {
             else{
                 Snackbar.make(view,"Please Fill All the Fields",Snackbar.LENGTH_SHORT).show()
             }
-            questionNumber++
+
+        }
+        binding.doneQuestionAddingbtn.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 
