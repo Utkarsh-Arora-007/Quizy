@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/join_navgraph"
+    app:startDestination="@id/joinHomeFragment">
+
+    <fragment
+        android:id="@+id/joinHomeFragment"
+        android:name="com.bitwisor.quizy.fragments.joinFragments.JoinHomeFragment"
+        android:label="fragment_join_home"
+        tools:layout="@layout/fragment_join_home" >
+        <action
+            android:id="@+id/action_joinHomeFragment_to_quizDetailsFragment"
+            app:destination="@id/quizDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/quizDetailsFragment"
+        android:name="com.bitwisor.quizy.fragments.joinFragments.QuizDetailsFragment"
+        android:label="fragment_quiz_details"
+        tools:layout="@layout/fragment_quiz_details" />
+</navigation>
