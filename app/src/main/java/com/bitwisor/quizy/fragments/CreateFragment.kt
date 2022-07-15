@@ -53,10 +53,6 @@ class CreateFragment : Fragment() {
 
             val bundle = Bundle()
             bundle.putString("uniqueId",unique_code)
-
-            val fragment= UniqueCode()
-            fragment.arguments=bundle
-            fragmentManager?.beginTransaction()?.replace(R.id.main_navgraph,fragment)?.commit()
             findNavController().navigate(R.id.action_createFragment_to_uniqueCode,bundle)
 
         }

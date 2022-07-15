@@ -17,8 +17,9 @@
         <entry key="..\:/Quizy/app/src/main/res/layout/fragment_home2.xml" value="0.21822916666666667" />
         <entry key="..\:/Quizy/app/src/main/res/layout/fragment_join.xml" value="0.23229166666666667" />
         <entry key="..\:/Quizy/app/src/main/res/layout/fragment_join_home.xml" value="0.21822916666666667" />
+        <entry key="..\:/Quizy/app/src/main/res/layout/fragment_play_quiz.xml" value="0.21822916666666667" />
         <entry key="..\:/Quizy/app/src/main/res/layout/fragment_quiz_details.xml" value="0.21822916666666667" />
-        <entry key="..\:/Quizy/app/src/main/res/layout/fragment_unique_code.xml" value="0.1" />
+        <entry key="..\:/Quizy/app/src/main/res/layout/fragment_unique_code.xml" value="0.264" />
       </map>
     </option>
   </component>

@@ -56,7 +56,7 @@
                 />
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/quizCodetxt"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -68,6 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/white_bg"
+                    android:paddingBottom="20dp"
                     >
                     <TextView
                         android:layout_width="wrap_content"
@@ -159,6 +160,36 @@
                         app:layout_constraintBottom_toBottomOf="@id/qDuration"
                         android:id="@+id/quizDurationview"
                         />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoSizeTextType="uniform"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:text="Availbility : "
+                        app:layout_constraintTop_toBottomOf="@id/qDuration"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_margin="20dp"
+                        android:id="@+id/qAvail"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoSizeTextType="uniform"
+                        android:maxLines="1"
+                        android:textColor="@color/maincolor"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:text=" Available "
+                        app:layout_constraintTop_toTopOf="@id/qAvail"
+                        app:layout_constraintLeft_toRightOf="@id/qAvail"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginRight="5dp"
+                        app:layout_constraintBottom_toBottomOf="@id/qAvail"
+                        android:id="@+id/quizAvailtxtview"
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
             <com.google.android.material.card.MaterialCardView
@@ -193,6 +224,17 @@
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/maincolor"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:elevation="5dp"
+                app:layout_constraintRight_toRightOf="parent"
+                android:id="@+id/mprogresscircle"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>

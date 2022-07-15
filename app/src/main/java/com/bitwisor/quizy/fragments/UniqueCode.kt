@@ -12,6 +12,7 @@ import com.bitwisor.quizy.databinding.FragmentUniqueCodeBinding
 
 class UniqueCode : Fragment() {
     lateinit var binding: FragmentUniqueCodeBinding
+    var uniqueCode = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,7 +27,10 @@ class UniqueCode : Fragment() {
 
         val textView:TextView=binding.joiningCode
         val args=this.arguments
-        val uniqueCode= args?.get("uniqueId")
+        if (args!=null){
+            uniqueCode= args.getString("uniqueId").toString()
+        }
+        textView.text = uniqueCode
     }
 
 
