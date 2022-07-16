@@ -13,10 +13,16 @@ After Quiz is being created you can share the Quiz link and through this Link th
  
  ## Features
 
-- Signup and Login via Google
+- Signup and Login via Google (One Tap)
 - Live previews
 - Fullscreen mode
+- Shows Response Is Right Or Wrong Immediately After Attempting
 
+## TECHNOLOGY USED
+- KOTLIN
+- XML
+- FIREBASE AUTHENTICATION AND REALTIME DATABASE
+- 
 
 ## SCREENSHOTS
 
