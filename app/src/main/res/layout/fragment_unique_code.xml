@@ -196,15 +196,14 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="100dp"
                 android:layout_marginBottom="50dp"
-                app:layout_constraintBottom_toTopOf="@+id/startQuizBtn"
+                app:layout_constraintBottom_toTopOf="@+id/BackQuizBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mprogresscircle"
                 app:lottie_autoPlay="true"
-                app:lottie_rawRes="@raw/thanks"
-                app:lottie_speed="1"
                 app:lottie_loop="true"
-                />
+                app:lottie_rawRes="@raw/thanks"
+                app:lottie_speed="1" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
