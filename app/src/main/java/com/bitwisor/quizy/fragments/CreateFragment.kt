@@ -218,7 +218,7 @@ class CreateFragment : Fragment() {
                 if (toflag){
                     if(!quizName.isNullOrEmpty() && !numberOfQ.isNullOrEmpty() && !duration.isNullOrEmpty()){
                         if (checkDuration(duration.toInt())  ){
-                            if(fromandToCondition(fromDay,fromMonth,fromYear,toDay,toMonth,toYear,fromHr,fromMin,toHr,toMin)
+                            if(NewValidationCondition(fromDay,fromMonth,fromYear,toDay,toMonth,toYear,fromHr,fromMin,toHr,toMin)
                                ){
                                 binding.createProgresscircle.visibility = View.VISIBLE
                                 val quizInfo = QuizInfoOfUser(quizName,quizId.toString(),fromDay,fromMonth,fromYear,toMonth,toDay,toYear,fromHr,fromMin,toHr,toMin,duration,numberOfQuestions.toString(),false)
@@ -355,40 +355,33 @@ class CreateFragment : Fragment() {
             return number
         }
     }
-    private fun fromandToCondition(fromDate:Int,fromMonth:Int,fromYear:Int,toDate:Int,toMonth:Int,toYear:Int,fromHr:Int,fromMin:Int,toHr:Int,toMin:Int):Boolean{
-        if(fromYear>toYear){
-            return false
-        }
-        if(fromYear<=toYear){
+    private fun NewValidationCondition(fromDate:Int,fromMonth:Int,fromYear:Int,toDate:Int,toMonth:Int,toYear:Int,fromHr:Int,fromMin:Int,toHr:Int,toMin:Int):Boolean{
+       if(fromDate == toDate && fromMonth == toMonth && fromYear == toYear ){
+           if (fromHr>toHr){
+               return false
+           }
+           else{
+               if (fromHr<=toHr){
+                   return fromMin < toMin
+               }
+           }
+       }
+        if(fromMonth == toMonth && fromYear == toYear) return fromDate <= toDate
+        if (fromYear == toYear){
             if (fromMonth>toMonth){
                 return false
             }
-            if (fromMonth<=toMonth){
-                if (fromDate>toDate){
-                    return false
-                }
-                if(fromDate<=toDate){
-
-                    if(fromDate == toDate){
-                        if (fromHr>toHr){
-                            return false
-                        }
-                        if(fromHr<=toHr){
-                            if(fromMin>toMin){
-                                return false
-                            }
-                            if(fromMin<=toMin){
-                                return true
-                            }
-                        }
-                    }else{
-                        return true
-                    }
-                }
+            else{
+                return fromMonth<=toMonth
             }
+        }
+        else{
+            Toast.makeText(requireContext(),"Quiz must have same Year",Toast.LENGTH_SHORT).show()
+            return false
         }
         return true
     }
+
     private fun CurrDateTimeEnteredFromDateTime(fromDate:Int,fromMonth:Int,fromYear:Int,fromHr:Int,fromMin:Int):Boolean{
         val c = Calendar.getInstance()
         val curr_year = c.get(Calendar.YEAR)
