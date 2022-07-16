@@ -53,6 +53,7 @@ class CreateFragment : Fragment() {
 
             val bundle = Bundle()
             bundle.putString("uniqueId",unique_code)
+            bundle.putString("QuizName",binding.quizNameInputEdittext.text.toString())// Added by Shivendu, to show the quiz name at Add Question Fragment.
             findNavController().navigate(R.id.action_createFragment_to_uniqueCode,bundle)
 
         }

@@ -27,5 +27,14 @@
         android:id="@+id/playQuizFragment"
         android:name="com.bitwisor.quizy.fragments.joinFragments.PlayQuizFragment"
         android:label="fragment_play_quiz"
-        tools:layout="@layout/fragment_play_quiz" />
+        tools:layout="@layout/fragment_play_quiz" >
+        <action
+            android:id="@+id/action_playQuizFragment_to_resultFragmentFragment"
+            app:destination="@id/resultFragmentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragmentFragment"
+        android:name="com.bitwisor.quizy.fragments.joinFragments.ResultFragmentFragment"
+        android:label="fragment_result_fragment"
+        tools:layout="@layout/fragment_result_fragment" />
 </navigation>

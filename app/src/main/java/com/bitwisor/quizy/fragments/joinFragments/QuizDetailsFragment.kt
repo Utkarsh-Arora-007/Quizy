@@ -1,6 +1,7 @@
 package com.bitwisor.quizy.fragments.joinFragments
 
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,10 +53,9 @@ class QuizDetailsFragment : Fragment() {
         database = FirebaseDatabase.getInstance().getReference("LeaderBoard")
         if(bundle!=null){
             quizCode = bundle.getString("QuizId","NONE")
-            displayName = bundle.getString("DisplayName","NONE")
-            androidId = bundle.getString("androidId","NONE")
         }
-        binding.quizCodetxt.text = quizCode
+
+        androidId= Settings.Secure.getString(requireActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
         binding.mprogresscircle.visibility = View.VISIBLE
 
         FirebaseDatabase.getInstance().reference
@@ -132,9 +132,9 @@ class QuizDetailsFragment : Fragment() {
                             if (isQuizExist and !isExpired and !isAlreadyGiven){
                                 var bundle:Bundle = Bundle()
                                 bundle.putString("QuizCode",quizCode)
+                                displayName = binding.quizDisplayNameEditText.text.toString()
                                 database.child(quizCode).child(androidId).child("DisplayName").setValue(displayName)
                                 database.child(quizCode).child(androidId).child("Score").setValue("0")
-                                database.child(quizCode).child(androidId).child("isAlreadyGiven").setValue(true)
                                 findNavController().navigate(com.bitwisor.quizy.R.id.action_quizDetailsFragment_to_playQuizFragment,bundle)
                                 Snackbar.make(view,"Quiz id : ${quizCode}",Snackbar.LENGTH_SHORT).show()
                             }
@@ -153,9 +153,9 @@ class QuizDetailsFragment : Fragment() {
                             if (isQuizExist and !isExpired and !isAlreadyGiven){
                                 var bundle:Bundle = Bundle()
                                 bundle.putString("QuizCode",quizCode)
+                                displayName = binding.quizDisplayNameEditText.text.toString()
                                 database.child(quizCode).child(androidId).child("DisplayName").setValue(displayName)
                                 database.child(quizCode).child(androidId).child("Score").setValue("0")
-                                database.child(quizCode).child(androidId).child("isAlreadyGiven").setValue(true)
                                 findNavController().navigate(com.bitwisor.quizy.R.id.action_quizDetailsFragment_to_playQuizFragment,bundle)
                                 Snackbar.make(view,"Quiz id : ${quizCode}",Snackbar.LENGTH_SHORT).show()
                             }
