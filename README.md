@@ -13,19 +13,19 @@ After Quiz is being created you can share the Quiz link and through this Link th
  
  ## Features
 
-- Signup and Login via Google (One Tap)
+- Signup and Login via Google (One Tap Login)
 - Live previews
 - Fullscreen mode
+- Admin Have Track of Scores Of Users
 - Shows Response Is Right Or Wrong Immediately After Attempting
 
 ## TECHNOLOGY USED
-- KOTLIN
-- XML
-- FIREBASE AUTHENTICATION AND REALTIME DATABASE
-- 
+- [KOTLIN](https://www.w3schools.com/kotlin/index.php)
+- [XML](https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction)
+- [FIREBASE AUTHENTICATION](https://firebase.google.com/products/auth?gclid=EAIaIQobChMIkI3oq9j9-AIVephmAh04fgQTEAAYASAAEgJwoPD_BwE&gclsrc=aw.ds) 
+- [FIREBASE REALTIME DATABASE](https://firebase.google.com/docs/database)
 
 ## SCREENSHOTS
-
 
 
 ## DOWNLOAD
