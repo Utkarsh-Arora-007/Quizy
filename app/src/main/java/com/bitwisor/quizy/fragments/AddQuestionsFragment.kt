@@ -43,6 +43,7 @@ class AddQuestionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.mprogress.visibility = View.GONE
         binding.donelottie.visibility = View.GONE
+
         var bundle = this.arguments
         if(bundle!=null){
             totalQuestions = bundle.getInt("NoOfQuestion")
@@ -151,6 +152,7 @@ class AddQuestionsFragment : Fragment() {
 
         }
         binding.doneQuestionAddingbtn.setOnClickListener {
+            CreateFragment.RandomUnrepeated(1000,9999).updateCount()
             findNavController().popBackStack()
         }
     }

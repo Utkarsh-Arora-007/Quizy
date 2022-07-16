@@ -90,31 +90,7 @@ class CreateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         database = FirebaseDatabase.getInstance().reference
-        binding.createProgresscircle.visibility = View.VISIBLE
-        FirebaseDatabase.getInstance().reference
-            .child("UserProfiles")
-            .child(FirebaseAuth.getInstance().currentUser!!.uid)
-            .child("MyQuiz")
-            .child(quizId.toString())
-            .child("Questions")
-            .addValueEventListener(object :ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    binding.createProgresscircle.visibility = View.GONE
-                    if (snapshot!=null){
-                        numberOfQuestions = snapshot.childrenCount.toInt()
-
-                    }
-                    else{
-                        numberOfQuestions = 0
-                    }
-                    binding.numberOfQuestionsAdded.text = "Count : $numberOfQuestions"
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Snackbar.make(view,"Database Error",Snackbar.LENGTH_SHORT).show()
-                }
-
-            })
+        binding.numberOfQuestionsAdded.text = "Count : $numberOfQuestions"
         binding.createBackbtn.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -381,6 +357,9 @@ class CreateFragment : Fragment() {
 
             return number
         }
+        fun updateCount(){
+            var obj = CreateFragment().updateCCount()
+        }
     }
     private fun NewValidationCondition(fromDate:Int,fromMonth:Int,fromYear:Int,toDate:Int,toMonth:Int,toYear:Int,fromHr:Int,fromMin:Int,toHr:Int,toMin:Int):Boolean{
        if(fromDate == toDate && fromMonth == toMonth && fromYear == toYear ){
@@ -407,5 +386,32 @@ class CreateFragment : Fragment() {
             return false
         }
         return true
+    }
+    private fun updateCCount(){
+        binding.createProgresscircle.visibility = View.VISIBLE
+        FirebaseDatabase.getInstance().reference
+            .child("UserProfiles")
+            .child(FirebaseAuth.getInstance().currentUser!!.uid)
+            .child("MyQuiz")
+            .child(quizId.toString())
+            .child("Questions")
+            .addValueEventListener(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    binding.createProgresscircle.visibility = View.GONE
+                    if (snapshot!=null){
+                        numberOfQuestions = snapshot.childrenCount.toInt()
+
+                    }
+                    else{
+                        numberOfQuestions = 0
+                    }
+                    binding.numberOfQuestionsAdded.text = "Count : $numberOfQuestions"
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Snackbar.make(requireView(),"Database Error",Snackbar.LENGTH_SHORT).show()
+                }
+
+            })
     }
 }
