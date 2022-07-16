@@ -43,137 +43,137 @@
                 />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.3"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
                 android:layout_margin="20dp"
                 android:background="@drawable/white_bg"
                 android:paddingBottom="20dp"
-                >
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.3">
+
                 <TextView
+                    android:id="@+id/result_qname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
                     android:autoSizeTextType="uniform"
                     android:maxLines="1"
+                    android:text="Quiz Name : "
                     android:textColor="@color/black"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:text="Quiz Name : "
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_margin="20dp"
-                    android:id="@+id/result_qname"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
+                    android:id="@+id/result_quizNametxtview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
                     android:autoSizeTextType="uniform"
                     android:maxLines="2"
+                    android:text="  "
                     android:textColor="@color/maincolor"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:text="  "
-                    app:layout_constraintTop_toTopOf="@id/result_qname"
+                    app:layout_constraintBottom_toBottomOf="@id/result_qname"
                     app:layout_constraintLeft_toRightOf="@id/result_qname"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginRight="5dp"
-                    app:layout_constraintBottom_toBottomOf="@id/result_qname"
-                    android:id="@+id/result_quizNametxtview"
-                    />
+                    app:layout_constraintTop_toTopOf="@id/result_qname" />
+
                 <TextView
+                    android:id="@+id/result_qQuestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
                     android:autoSizeTextType="uniform"
                     android:maxLines="1"
+                    android:text="Number Of Questions : "
                     android:textColor="@color/black"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:text="Number Of Questions : "
-                    app:layout_constraintTop_toBottomOf="@id/result_qname"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_margin="20dp"
-                    android:id="@+id/result_qQuestion"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/result_qname" />
+
                 <TextView
+                    android:id="@+id/result_quizNoQuestiontxtview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
                     android:autoSizeTextType="uniform"
                     android:maxLines="1"
+                    android:text=" "
                     android:textColor="@color/maincolor"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:text=" "
-                    app:layout_constraintTop_toTopOf="@id/result_qQuestion"
+                    app:layout_constraintBottom_toBottomOf="@id/result_qQuestion"
                     app:layout_constraintLeft_toRightOf="@id/result_qQuestion"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginRight="5dp"
-                    app:layout_constraintBottom_toBottomOf="@id/result_qQuestion"
-                    android:id="@+id/result_quizNoQuestiontxtview"
-                    />
+                    app:layout_constraintTop_toTopOf="@id/result_qQuestion" />
+
                 <TextView
+                    android:id="@+id/result_qDisplayName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
                     android:autoSizeTextType="uniform"
                     android:maxLines="1"
+                    android:text="Display Name : "
                     android:textColor="@color/black"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:text="Display Name : "
-                    app:layout_constraintTop_toBottomOf="@id/result_qQuestion"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_margin="20dp"
-                    android:id="@+id/result_qDisplayName"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/result_qQuestion" />
+
                 <TextView
+                    android:id="@+id/result_quizDurationview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
                     android:autoSizeTextType="uniform"
                     android:maxLines="1"
+                    android:text=" "
                     android:textColor="@color/maincolor"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:text=" "
-                    app:layout_constraintTop_toTopOf="@id/result_qDisplayName"
+                    app:layout_constraintBottom_toBottomOf="@id/result_qDisplayName"
                     app:layout_constraintLeft_toRightOf="@id/result_qDisplayName"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginRight="5dp"
-                    app:layout_constraintBottom_toBottomOf="@id/result_qDisplayName"
-                    android:id="@+id/result_quizDurationview"
-                    />
+                    app:layout_constraintTop_toTopOf="@id/result_qDisplayName" />
+
                 <TextView
+                    android:id="@+id/result_qScore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
                     android:autoSizeTextType="uniform"
                     android:maxLines="1"
+                    android:text="Score : "
                     android:textColor="@color/black"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:text="Score : "
-                    app:layout_constraintTop_toBottomOf="@id/result_qDisplayName"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_margin="20dp"
-                    android:id="@+id/result_qScore"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/result_qDisplayName" />
+
                 <TextView
+                    android:id="@+id/result_quizAvailtxtview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
                     android:autoSizeTextType="uniform"
                     android:maxLines="1"
+                    android:text="  "
                     android:textColor="@color/maincolor"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:text="  "
-                    app:layout_constraintTop_toTopOf="@id/result_qScore"
+                    app:layout_constraintBottom_toBottomOf="@id/result_qScore"
                     app:layout_constraintLeft_toRightOf="@id/result_qScore"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginRight="5dp"
-                    app:layout_constraintBottom_toBottomOf="@id/result_qScore"
-                    android:id="@+id/result_quizAvailtxtview"
-                    />
+                    app:layout_constraintTop_toTopOf="@id/result_qScore" />
             </androidx.constraintlayout.widget.ConstraintLayout>
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -196,7 +196,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Go to Home"
+                        android:text="Back to Start"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -219,6 +219,22 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:elevation="5dp"
                 />
+
+
+            <org.eazegraph.lib.charts.PieChart
+                android:id="@+id/piechart"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="30dp"
+                android:padding="8dp"
+                app:egLegendTextSize="18sp"
+                app:egUsePieRotation="true"
+                app:egValueTextSize="36sp"
+                app:layout_constraintBottom_toTopOf="@+id/goToHomeBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

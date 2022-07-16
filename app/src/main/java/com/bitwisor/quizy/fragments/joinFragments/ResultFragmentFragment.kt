@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.MainActivity
 import com.bitwisor.quizy.R
@@ -17,6 +17,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import org.eazegraph.lib.charts.PieChart
+import org.eazegraph.lib.models.PieModel
 
 
 class ResultFragmentFragment : Fragment() {
@@ -28,6 +30,7 @@ class ResultFragmentFragment : Fragment() {
     var score:String =""
     var quizCode=""
     var androidId=""
+    lateinit var pieChart:PieChart
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +43,7 @@ class ResultFragmentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.resultMprogress.visibility = View.VISIBLE
         var bundle =arguments
+        pieChart=binding.piechart
         androidId= Settings.Secure.getString(requireActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
 
         if (bundle!=null){
@@ -49,7 +53,7 @@ class ResultFragmentFragment : Fragment() {
             findNavController().popBackStack()
         }
         binding.goToHomeBtn.setOnClickListener {
-            var i = Intent(requireActivity(),MainActivity::class.java)
+            var i = Intent(requireActivity(), MainActivity::class.java)
             startActivity(i)
             requireActivity().finishAffinity()
         }
@@ -78,6 +82,23 @@ class ResultFragmentFragment : Fragment() {
                                         binding.resultQuizNoQuestiontxtview.text = numberOfQuestion
                                         binding.resultQuizDurationview.text = displayName
                                         binding.resultQuizAvailtxtview.text = score
+
+
+                                        pieChart.addPieSlice(
+                                            PieModel(
+                                                "CorrectScore", score.toFloat(), resources.getColor(android.R.color.holo_green_light)
+                                            )
+                                        )
+                                        val incorrectScore=((numberOfQuestion.toInt()*10)-score.toInt())
+                                        pieChart.addPieSlice(
+                                            PieModel(
+                                                "incorrectScore",
+                                                incorrectScore.toFloat(),
+                                                resources.getColor(android.R.color.holo_red_dark)
+                                            )
+                                        )
+
+                                        pieChart.startAnimation();
                                     }
                                     else{
                                         Snackbar.make(view,"Some Error Occured",Snackbar.LENGTH_SHORT).show()
