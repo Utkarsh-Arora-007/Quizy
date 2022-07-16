@@ -1,1 +1,1 @@
-# Quizingaa
+# Quizy
