@@ -1,10 +1,8 @@
 package com.bitwisor.quizy.fragments
 
-import android.content.ActivityNotFoundException
-import android.content.ClipboardManager
-import android.content.Context
+import android.R.attr.label
+import android.content.*
 import android.content.Context.CLIPBOARD_SERVICE
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,9 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.bitwisor.quizy.databinding.FragmentUniqueCodeBinding
+import com.google.firebase.database.core.Context
 import java.util.*
 
 
@@ -59,6 +59,10 @@ class UniqueCode : Fragment() {
         }
 
         copy.setOnClickListener {
+            val clipboard = requireActivity().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+            val clip = ClipData.newPlainText("quizCode","https://www.quizy.com/${uniqueCode}")
+            clipboard!!.setPrimaryClip(clip)
+            Toast.makeText(requireContext(),"Sharable link is copied to Clipboard",Toast.LENGTH_SHORT).show()
          //  var clipboard:ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         }
 
@@ -77,7 +81,7 @@ class UniqueCode : Fragment() {
             "https://www.quizy.com/${uniqueCode}"
         )
         try {
-            Objects.requireNonNull(activity)?.startActivity(instagramIntent)
+            Objects.requireNonNull(requireActivity())?.startActivity(instagramIntent)
         } catch (ex: ActivityNotFoundException) {
             startActivity(
                 Intent(
@@ -99,7 +103,7 @@ class UniqueCode : Fragment() {
             "https://www.quizy.com/${uniqueCode}"
         )
         try {
-            Objects.requireNonNull(activity)?.startActivity(telegramIntent)
+            Objects.requireNonNull(requireActivity())?.startActivity(telegramIntent)
         } catch (ex: ActivityNotFoundException) {
             startActivity(
                 Intent(
@@ -120,7 +124,7 @@ class UniqueCode : Fragment() {
             "https://www.quizy.com/${uniqueCode}"
         )
         try {
-            Objects.requireNonNull(activity)?.startActivity(whatsappIntent)
+            Objects.requireNonNull(requireActivity())?.startActivity(whatsappIntent)
         } catch (ex: ActivityNotFoundException) {
             startActivity(
                 Intent(

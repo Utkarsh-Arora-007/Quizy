@@ -53,7 +53,6 @@ class CreateFragment : Fragment() {
 
             val bundle = Bundle()
             bundle.putString("uniqueId",unique_code)
-            bundle.putString("QuizName",binding.quizNameInputEdittext.text.toString())// Added by Shivendu, to show the quiz name at Add Question Fragment.
             findNavController().navigate(R.id.action_createFragment_to_uniqueCode,bundle)
 
         }
@@ -125,7 +124,7 @@ class CreateFragment : Fragment() {
                 10,
                 // 24 hours time picker is
                 // false (varies according to the region)
-                false
+                true
             )
 
             // then after building the timepicker
@@ -140,36 +139,7 @@ class CreateFragment : Fragment() {
 
                         // logic to properly handle
                         // the picked timings by user
-                        val formattedTime: String = when {
-                            hourOfDay == 0 -> {
-                                if (minute < 10) {
-                                    "${hourOfDay + 12}:0${minute} am"
-                                } else {
-                                    "${hourOfDay + 12}:${minute} am"
-                                }
-                            }
-                            hourOfDay > 12 -> {
-                                if (minute < 10) {
-                                    "${hourOfDay - 12}:0${minute} pm"
-                                } else {
-                                    "${hourOfDay - 12}:${minute} pm"
-                                }
-                            }
-                            hourOfDay == 12 -> {
-                                if (minute < 10) {
-                                    "${hourOfDay}:0${minute} pm"
-                                } else {
-                                    "${hourOfDay}:${minute} pm"
-                                }
-                            }
-                            else -> {
-                                if (minute < 10) {
-                                    "${hourOfDay}:${minute} am"
-                                } else {
-                                    "${hourOfDay}:${minute} am"
-                                }
-                            }
-                        }
+                        val formattedTime: String = "${hourOfDay}:${minute} "
                         binding.toTimetxt.text = formattedTime
                     }
                 }
@@ -187,7 +157,7 @@ class CreateFragment : Fragment() {
                 10,
                 // 24 hours time picker is
                 // false (varies according to the region)
-                false
+                true
             )
 
             // then after building the timepicker
@@ -201,6 +171,7 @@ class CreateFragment : Fragment() {
                 var bundle = Bundle()
                 bundle.putInt("NoOfQuestion",binding.quizNumberofquestionInputEdittext.text.toString().toInt())
                 bundle.putInt("QuizId",quizId)
+                bundle.putString("QuizName",binding.quizNameInputEdittext.text.toString())// Added by Shivendu, to show the quiz name at Add Question Fragment.
                 findNavController().navigate(R.id.action_createFragment_to_addQuestionsFragment,bundle)
             }
             else{

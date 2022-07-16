@@ -12,155 +12,172 @@
         android:layout_height="match_parent"
         tools:context=".fragments.HomeFragment">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp"
-            >
+            android:layout_height="match_parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/topbar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                >
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                android:orientation="vertical"
+                android:padding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topbar"
+                >
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:layout_width="170dp"
-                        android:layout_height="170dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintVertical_bias="0.2"
-                        app:lottie_rawRes="@raw/create"
-                        app:lottie_loop="true"
-                        app:lottie_autoPlay="true"
-                        android:id="@+id/createLottie"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Create Quiz"
-                        app:layout_constraintTop_toBottomOf="@id/createLottie"
-                        app:layout_constraintLeft_toLeftOf="@id/createLottie"
-                        app:layout_constraintRight_toRightOf="@id/createLottie"
-                        android:textSize="24sp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:layout_marginTop="10dp"
-                        android:autoSizeTextType="uniform"
-                        android:maxLines="1"
-                        android:id="@+id/createQuiztxt"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Creating a Quiz will make you Quiz Admin and Allows you to host a quiz"
-                        app:layout_constraintTop_toBottomOf="@id/createQuiztxt"
-                        app:layout_constraintLeft_toLeftOf="@id/createQuiztxt"
-                        app:layout_constraintRight_toRightOf="@id/createQuiztxt"
-                        android:textAlignment="center"
-                        android:textSize="12sp"
-                        android:textColor="@color/mygrey"
-                        android:layout_marginTop="5dp"
-                        android:autoSizeTextType="uniform"
-                        android:maxLines="2"
-                        android:id="@+id/createQuizbelowtxt"
-                        />
-                    <Button
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/maincolor"
-                        app:layout_constraintTop_toBottomOf="@+id/createQuizbelowtxt"
-                        app:layout_constraintLeft_toLeftOf="@id/createQuiztxt"
-                        app:layout_constraintRight_toRightOf="@id/createQuiztxt"
-                        android:text="Create Quiz"
-                        android:textAllCaps="false"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="40dp"
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/createQuizBtn"
-                        />
+                        android:layout_height="match_parent">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintVertical_bias="0.2"
+                            app:lottie_rawRes="@raw/create"
+                            app:lottie_loop="true"
+                            app:lottie_autoPlay="true"
+                            android:id="@+id/createLottie"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Create Quiz"
+                            app:layout_constraintTop_toBottomOf="@id/createLottie"
+                            app:layout_constraintLeft_toLeftOf="@id/createLottie"
+                            app:layout_constraintRight_toRightOf="@id/createLottie"
+                            android:textSize="24sp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:layout_marginTop="10dp"
+                            android:autoSizeTextType="uniform"
+                            android:maxLines="1"
+                            android:id="@+id/createQuiztxt"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Creating a Quiz will make you Quiz Admin and Allows you to host a quiz"
+                            app:layout_constraintTop_toBottomOf="@id/createQuiztxt"
+                            app:layout_constraintLeft_toLeftOf="@id/createQuiztxt"
+                            app:layout_constraintRight_toRightOf="@id/createQuiztxt"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="@color/mygrey"
+                            android:layout_marginTop="5dp"
+                            android:autoSizeTextType="uniform"
+                            android:maxLines="2"
+                            android:id="@+id/createQuizbelowtxt"
+                            />
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/maincolor"
+                            app:layout_constraintTop_toBottomOf="@+id/createQuizbelowtxt"
+                            app:layout_constraintLeft_toLeftOf="@id/createQuiztxt"
+                            app:layout_constraintRight_toRightOf="@id/createQuiztxt"
+                            android:text="Create Quiz"
+                            android:textAllCaps="false"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/createQuizBtn"
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintVertical_bias="0.2"
+                            app:lottie_rawRes="@raw/join"
+                            app:lottie_loop="true"
+                            app:lottie_autoPlay="true"
+                            android:id="@+id/joinLottie"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Join Quiz"
+                            app:layout_constraintTop_toBottomOf="@id/joinLottie"
+                            app:layout_constraintLeft_toLeftOf="@id/joinLottie"
+                            app:layout_constraintRight_toRightOf="@id/joinLottie"
+                            android:textSize="24sp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:layout_marginTop="10dp"
+                            android:autoSizeTextType="uniform"
+                            android:maxLines="1"
+                            android:id="@+id/joinQuiztxt"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Joining a quiz will alow you to participate in a quiz"
+                            app:layout_constraintTop_toBottomOf="@id/joinQuiztxt"
+                            app:layout_constraintLeft_toLeftOf="@id/joinQuiztxt"
+                            app:layout_constraintRight_toRightOf="@id/joinQuiztxt"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="@color/mygrey"
+                            android:layout_marginTop="5dp"
+                            android:autoSizeTextType="uniform"
+                            android:maxLines="2"
+                            android:id="@+id/joinQuizbelowtxt"
+                            />
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/maincolor"
+                            app:layout_constraintTop_toBottomOf="@+id/joinQuizbelowtxt"
+                            app:layout_constraintLeft_toLeftOf="@id/joinQuizbelowtxt"
+                            app:layout_constraintRight_toRightOf="@id/joinQuizbelowtxt"
+                            android:text="Join Quiz"
+                            android:textAllCaps="false"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/joinQuizBtn"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </LinearLayout>
 
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:layout_width="170dp"
-                        android:layout_height="170dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintVertical_bias="0.2"
-                        app:lottie_rawRes="@raw/join"
-                        app:lottie_loop="true"
-                        app:lottie_autoPlay="true"
-                        android:id="@+id/joinLottie"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Join Quiz"
-                        app:layout_constraintTop_toBottomOf="@id/joinLottie"
-                        app:layout_constraintLeft_toLeftOf="@id/joinLottie"
-                        app:layout_constraintRight_toRightOf="@id/joinLottie"
-                        android:textSize="24sp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:layout_marginTop="10dp"
-                        android:autoSizeTextType="uniform"
-                        android:maxLines="1"
-                        android:id="@+id/joinQuiztxt"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Joining a quiz will alow you to participate in a quiz"
-                        app:layout_constraintTop_toBottomOf="@id/joinQuiztxt"
-                        app:layout_constraintLeft_toLeftOf="@id/joinQuiztxt"
-                        app:layout_constraintRight_toRightOf="@id/joinQuiztxt"
-                        android:textAlignment="center"
-                        android:textSize="12sp"
-                        android:textColor="@color/mygrey"
-                        android:layout_marginTop="5dp"
-                        android:autoSizeTextType="uniform"
-                        android:maxLines="2"
-                        android:id="@+id/joinQuizbelowtxt"
-                        />
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/maincolor"
-                        app:layout_constraintTop_toBottomOf="@+id/joinQuizbelowtxt"
-                        app:layout_constraintLeft_toLeftOf="@id/joinQuizbelowtxt"
-                        app:layout_constraintRight_toRightOf="@id/joinQuizbelowtxt"
-                        android:text="Join Quiz"
-                        android:textAllCaps="false"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="40dp"
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/joinQuizBtn"
-                        />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </LinearLayout>
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 </layout>
