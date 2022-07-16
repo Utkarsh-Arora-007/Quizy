@@ -16,6 +16,12 @@ After Quiz is being created you can share the Quiz link and through this Link th
 - Signup and Login via Google
 - Live previews
 - Fullscreen mode
-- 
+
+
+## SCREENSHOTS
+
+
+
+## DOWNLOAD
 
 
