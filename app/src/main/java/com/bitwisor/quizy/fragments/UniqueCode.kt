@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
+import com.bitwisor.quizy.MainActivity
 import com.bitwisor.quizy.databinding.FragmentUniqueCodeBinding
 import com.google.firebase.database.core.Context
 import java.util.*
@@ -44,7 +45,11 @@ class UniqueCode : Fragment() {
         val telegram:ImageView=binding.shareviaTelegram
         val instagram:ImageView=binding.shareviaInstagram
         val copy:ImageView=binding.copyToClipboard
-
+        binding.BackQuizBtn.setOnClickListener {
+        val i = Intent(requireActivity(),MainActivity::class.java)
+        startActivity(i)
+            requireActivity().finishAffinity()
+        }
         whatsapp.setOnClickListener {
 
             openWhatsapp()

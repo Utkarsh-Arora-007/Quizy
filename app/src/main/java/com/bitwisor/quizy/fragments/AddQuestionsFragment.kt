@@ -88,6 +88,7 @@ class AddQuestionsFragment : Fragment() {
                 if(isCorrectOptionValid(options,correctOption)){
                     binding.mprogress.visibility = View.VISIBLE
                     val questionData = QuizQuestions(question,option1,option2,option3,option4,correctOption)
+
                     database.reference.child("UserProfiles")
                         .child(firebaseAuth.currentUser!!.uid)
                         .child("MyQuiz")
@@ -97,25 +98,37 @@ class AddQuestionsFragment : Fragment() {
                         .setValue(questionData)
                         .addOnCompleteListener {
                             if (it.isSuccessful){
-                                binding.mprogress.visibility = View.GONE
-                                Snackbar.make(view,"Question $qnu added",Snackbar.LENGTH_SHORT).show()
-                                binding.questionedittxt.text.clear()
-                                binding.optionAedittxt.text.clear()
-                                binding.optionBedittxt.text.clear()
-                                binding.optionCedittxt.text.clear()
-                                binding.optionDedittxt.text.clear()
-                                binding.correctOptiontxt.text.clear()
-                                binding.progressBar1.progress = questionNo
-                                questionNo++
-                                binding.questionNumber.text = "Q.No. $questionNo"
-                                // correct option options me se he hona chahiye
-                                if(questionNo>totalQuestions){
-                                    binding.questionNumber.text = "Done"
-                                    binding.donelottie.visibility = View.VISIBLE
-                                    binding.addnextQuestionbtn.visibility = View.GONE
-                                    binding.doneQuestionAddingbtn.visibility = View.VISIBLE
-                                    binding.qna.visibility = View.INVISIBLE
-                                }
+                                database.reference.child("JoinRooms")
+                                    .child(quizId.toString())
+                                    .child("Questions")
+                                    .child(qnu.toString())
+                                    .setValue(questionData)
+                                    .addOnCompleteListener {
+                                        binding.mprogress.visibility = View.GONE
+                                        Snackbar.make(view,"Question $qnu added",Snackbar.LENGTH_SHORT).show()
+                                        binding.questionedittxt.text.clear()
+                                        binding.optionAedittxt.text.clear()
+                                        binding.optionBedittxt.text.clear()
+                                        binding.optionCedittxt.text.clear()
+                                        binding.optionDedittxt.text.clear()
+                                        binding.correctOptiontxt.text.clear()
+                                        binding.progressBar1.progress = questionNo
+                                        questionNo++
+                                        binding.questionNumber.text = "Q.No. $questionNo"
+                                        // correct option options me se he hona chahiye
+                                        if(questionNo>totalQuestions){
+                                            binding.questionNumber.text = "Done"
+                                            binding.donelottie.visibility = View.VISIBLE
+                                            binding.addnextQuestionbtn.visibility = View.GONE
+                                            binding.doneQuestionAddingbtn.visibility = View.VISIBLE
+                                            binding.qna.visibility = View.INVISIBLE
+                                        }
+                                    }.addOnFailureListener {
+                                        binding.mprogress.visibility = View.GONE
+
+                                        Snackbar.make(view,"Question $questionNo Add Failed Please Retry",Snackbar.LENGTH_SHORT).show()
+                                    }
+
                             }
                             else{
                                 binding.mprogress.visibility = View.GONE

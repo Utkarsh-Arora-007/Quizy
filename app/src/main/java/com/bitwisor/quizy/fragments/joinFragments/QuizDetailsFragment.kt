@@ -8,11 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.databinding.FragmentQuizDetailsBinding
-import com.bitwisor.quizy.utils.QuizInfoOfUser
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.annotations.NotNull
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class QuizDetailsFragment : Fragment() {
@@ -22,16 +23,16 @@ class QuizDetailsFragment : Fragment() {
     lateinit var database: DatabaseReference
     var quizName:String =" "
     var quizId:String =" "
-    var currDate:String =" "
-    var currMonth:String =" "
-    var currYear:String =" "
-    var currTimeHr:String =" "
-    var currTimeMin:String =" "
-    var endDate:String =" "
-    var endMonth:String =" "
-    var endYear:String =" "
-    var endTimeHr:String =" "
-    var endTimeMin:String =" "
+    var fromDate =0L
+    var fromMonth =0L
+    var fromYear =0L
+    var toMonth =0L
+    var toDate =0L
+    var toYear =0L
+    var fromHr =0L
+    var fromMin =0L
+    var toHr =0L
+    var toMin =0L
     var duration:String =" "
     var numberOfQuestions:String =" "
     var isExpired:Boolean = false
@@ -69,25 +70,30 @@ class QuizDetailsFragment : Fragment() {
                             if (quizCode == key){
                                 binding.mprogresscircle.visibility = View.GONE
                                 isQuizExist = true
-                                quizName =" ${child.child("quizName").value}"
-                                quizId =" ${child.child("quizId").value}"
-                                currDate =" ${child.child("currDate").value}"
-                                currMonth =" ${child.child("currMonth").value}"
-                                currYear =" ${child.child("currYear").value}"
-                                currTimeHr =" ${child.child("currTimeHr").value}"
-                                currTimeMin =" ${child.child("currTimeMin").value}"
-                                endDate =" ${child.child("endDate").value}"
-                                endMonth =" ${child.child("endMonth").value}"
-                                endYear =" ${child.child("endYear").value}"
-                                endTimeHr =" ${child.child("endTimeHr").value}"
-                                endTimeMin =" ${child.child("endTimeMin").value}"
-                                duration =" ${child.child("duration").value}"
-                                numberOfQuestions =" ${child.child("numberOfQuestions").value}"
-                                if(child.child("isExpired").value == null){
-                                    isExpired  = false
+                                quizName =" ${child.child("Details").child("quizName").value}"
+                                quizId =" ${child.child("Details").child("quizId").value}"
+                                fromDate = child.child("Details").child("fromDate").value as Long
+                                fromMonth = child.child("Details").child("fromMonth").value as Long
+                                fromYear = child.child("Details").child("fromYear").value as Long
+                                toMonth = child.child("Details").child("toMonth").value as Long
+                                toDate = child.child("Details").child("toDate").value as Long
+                                toYear = child.child("Details").child("toYear").value as Long
+                                fromHr = child.child("Details").child("fromHr").value as Long
+                                fromMin = child.child("Details").child("fromMin").value as Long
+                                toHr = child.child("Details").child("toHr").value  as Long
+                                toMin = child.child("Details").child("toMin").value  as Long
+                                duration =" ${child.child("Details").child("duration").value}"
+                                numberOfQuestions =" ${child.child("Details").child("numberOfQuestions").value}"
+                                if(child.child("Details").child("isExpired").value == null){
+                                    if(checkQuizisValidorNot(toDate,toMonth,toYear,toHr,toMin)){
+                                        isExpired  = false
+                                    }
+                                    else{
+                                        isExpired = true
+                                    }
                                 }
                                 else{
-                                    isExpired  =child.child("isExpired").value as Boolean
+                                    isExpired  =child.child("Details").child("isExpired").value as Boolean
                                 }
 
                                 break
@@ -178,5 +184,46 @@ class QuizDetailsFragment : Fragment() {
                 })
 
         }
+    }
+    private fun checkQuizisValidorNot(toDate:Long,toMonth:Long,toYear:Long,toHr:Long,toMin:Long):Boolean{
+        return true
+        val c = Calendar.getInstance()
+        val curr_year = c.get(Calendar.YEAR)
+        val curr_month = c.get(Calendar.MONTH)
+        val curr_day = c.get(Calendar.DAY_OF_MONTH)
+        val curr_hour = c.get(Calendar.HOUR_OF_DAY)
+        val curr_minute = c.get(Calendar.MINUTE)
+        if (curr_year>toDate){
+            return false
+        }
+        if (curr_year<=toYear.toInt()){
+            if (curr_month>toMonth.toInt()){
+                return false
+            }
+            if(curr_month<=toMonth.toInt()){
+                if (curr_day>toDate.toInt()){
+                    return false
+                }
+                if (curr_day<=toDate.toInt()){
+                    if (curr_day == toDate.toInt()){
+                        if (curr_hour>toHr.toInt()){
+                            return false
+                        }
+                        if(curr_hour<=toHr.toInt()){
+                            if (curr_minute>toMin.toInt()){
+                                return false
+                            }
+                            if (curr_minute<=toMin.toInt()){
+                                return true
+                            }
+                        }
+                    }
+                    else{
+                        return true
+                    }
+                }
+            }
+        }
+        return true
     }
 }

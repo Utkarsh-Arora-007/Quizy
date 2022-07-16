@@ -14,7 +14,17 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/maincolor"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:elevation="5dp"
+                app:layout_constraintRight_toRightOf="parent"
+                android:id="@+id/create_progresscircle"
+                />
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -84,6 +94,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="16sp"
+                android:maxWidth="220dp"
                 android:id="@+id/quiz_numberofquestion_txt"
                 app:layout_constraintTop_toBottomOf="@id/outlinedTextField"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -107,6 +118,41 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/quiz_numberofquestion_input_edittext"
+                    android:inputType="number"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Durations ( in mins )"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:maxWidth="200dp"
+                android:id="@+id/quiz_duration_txt"
+                app:layout_constraintTop_toTopOf="@id/quiz_numberofquestion_txt"
+                app:layout_constraintBottom_toBottomOf="@id/quiz_numberofquestion_txt"
+                app:layout_constraintLeft_toRightOf="@id/quiz_numberofquestion_txt"
+                android:layout_marginLeft="20dp"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlinedTextField3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="10 mins"
+                app:layout_constraintTop_toBottomOf="@+id/quiz_duration_txt"
+                app:layout_constraintLeft_toLeftOf="@id/quiz_duration_txt"
+                app:layout_constraintRight_toRightOf="@id/quiz_duration_txt"
+                android:layout_marginTop="5dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/quiz_duration_input_edittext"
                     android:inputType="number"
                     />
 
@@ -258,6 +304,20 @@
                 android:text="Add Questions"
                 android:textAllCaps="false"
                 android:id="@+id/addQbtn"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Questions Added : "
+                app:layout_constraintTop_toTopOf="@id/addQbtn"
+                app:layout_constraintBottom_toBottomOf="@id/addQbtn"
+                app:layout_constraintLeft_toRightOf="@id/addQbtn"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:id="@+id/number_of_questions_added"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
                 />
             <Button
                 android:layout_width="match_parent"

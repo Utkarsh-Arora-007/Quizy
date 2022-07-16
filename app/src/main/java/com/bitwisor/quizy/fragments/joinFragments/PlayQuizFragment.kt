@@ -82,10 +82,10 @@ class PlayQuizFragment : Fragment(),View.OnClickListener {
                             if (quizCode == key){
                                 binding.playquizMprogress.visibility = View.GONE
                                 isQuizExist = true
-                                quizName ="${child.child("quizName").value}"
-                                quizId ="${child.child("quizId").value}"
-                                duration ="${child.child("duration").value}"
-                                numberOfQuestions ="${child.child("numberOfQuestions").value}".toInt()
+                                quizName ="${child.child("Details").child("quizName").value}"
+                                quizId ="${child.child("Details").child("quizId").value}"
+                                duration ="${child.child("Details").child("duration").value}"
+                                numberOfQuestions ="${child.child("Details").child("numberOfQuestions").value}".toInt()
                                 for (i in child.child("Questions").children){
                                     val question = "${i.child("question").value}"
                                     val option1 = "${i.child("option1").value}"

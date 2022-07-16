@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +19,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.R
 import com.bitwisor.quizy.databinding.FragmentCreateBinding
+import com.bitwisor.quizy.utils.QuizInfoOfUser
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import java.util.*
 
 
@@ -33,10 +37,16 @@ class CreateFragment : Fragment() {
     var toYear =0
     var toMonth =0
     var toDay =0
+    var fromHr=0
+    var fromMin =0
+    var toHr = 0
+    var toMin = 0
     var fromflag = false
     var toflag = false
     var quizId = 0
     var quiz_duration=0
+    var numberOfQuestions=0
+    lateinit var database: DatabaseReference
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,17 +55,39 @@ class CreateFragment : Fragment() {
         return binding.root
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        quizId = RandomUnrepeated(1000,9999).nextInt()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        quizId = (1000..9999).random()
-        binding.createQuizBtn.setOnClickListener {
-            val unique_code=quizId.toString()
+        database = FirebaseDatabase.getInstance().reference
+        binding.createProgresscircle.visibility = View.VISIBLE
+        FirebaseDatabase.getInstance().reference
+            .child("UserProfiles")
+            .child(FirebaseAuth.getInstance().currentUser!!.uid)
+            .child("MyQuiz")
+            .child(quizId.toString())
+            .child("Questions")
+            .addValueEventListener(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    binding.createProgresscircle.visibility = View.GONE
+                    if (snapshot!=null){
+                        numberOfQuestions = snapshot.childrenCount.toInt()
 
-            val bundle = Bundle()
-            bundle.putString("uniqueId",unique_code)
-            findNavController().navigate(R.id.action_createFragment_to_uniqueCode,bundle)
+                    }
+                    else{
+                        numberOfQuestions = 0
+                    }
+                    binding.numberOfQuestionsAdded.text = "Count : $numberOfQuestions"
+                }
 
-        }
+                override fun onCancelled(error: DatabaseError) {
+                    Snackbar.make(view,"Database Error",Snackbar.LENGTH_SHORT).show()
+                }
+
+            })
         binding.createBackbtn.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -76,36 +108,21 @@ class CreateFragment : Fragment() {
 
                         // logic to properly handle
                         // the picked timings by user
-                        val formattedTime: String = when {
-                            hourOfDay == 0 -> {
-                                if (minute < 10) {
-                                    "${hourOfDay + 12}:0${minute} am"
-                                } else {
-                                    "${hourOfDay + 12}:${minute} am"
-                                }
-                            }
-                            hourOfDay > 12 -> {
-                                if (minute < 10) {
-                                    "${hourOfDay - 12}:0${minute} pm"
-                                } else {
-                                    "${hourOfDay - 12}:${minute} pm"
-                                }
-                            }
-                            hourOfDay == 12 -> {
-                                if (minute < 10) {
-                                    "${hourOfDay}:0${minute} pm"
-                                } else {
-                                    "${hourOfDay}:${minute} pm"
-                                }
-                            }
-                            else -> {
-                                if (minute < 10) {
-                                    "${hourOfDay}:${minute} am"
-                                } else {
-                                    "${hourOfDay}:${minute} am"
-                                }
-                            }
+                        var formattedTime: String =""
+                        if (minute < 10 && hourOfDay <10) {
+                            formattedTime = "0${hourOfDay}:0${minute}"
+                        } else if(minute<10 && hourOfDay >=10) {
+                            formattedTime = "${hourOfDay}:0${minute} "
                         }
+                        else if (minute>=10 && hourOfDay<10){
+                            formattedTime = "0${hourOfDay}:${minute}"
+
+                        }
+                        else{
+                            formattedTime = "${hourOfDay}:${minute}"
+                        }
+                        fromHr = hourOfDay
+                        fromMin = minute
                         binding.fromTimetxt.text = formattedTime
                     }
                 }
@@ -139,7 +156,21 @@ class CreateFragment : Fragment() {
 
                         // logic to properly handle
                         // the picked timings by user
-                        val formattedTime: String = "${hourOfDay}:${minute} "
+                        var formattedTime: String =""
+                        if (minute < 10 && hourOfDay <10) {
+                            formattedTime = "0${hourOfDay}:0${minute}"
+                        } else if(minute<10 && hourOfDay >=10) {
+                            formattedTime = "${hourOfDay}:0${minute} "
+                        }
+                        else if (minute>=10 && hourOfDay<10){
+                            formattedTime = "0${hourOfDay}:${minute}"
+
+                        }
+                        else{
+                            formattedTime = "${hourOfDay}:${minute}"
+                        }
+                        toHr = hourOfDay
+                        toMin = minute
                         binding.toTimetxt.text = formattedTime
                     }
                 }
@@ -179,20 +210,68 @@ class CreateFragment : Fragment() {
             }
 
         }
-//        binding.createQuizBtn.setOnClickListener {
-//            if (fromflag){
-//                if (toflag){
-//
-//                }
-//                else{
-//                    Toast.makeText(requireContext(),"Please Enter To Date",Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//            else{
-//                Toast.makeText(requireContext(),"Please Enter From Date",Toast.LENGTH_SHORT).show()
-//            }
-//        }
+        binding.createQuizBtn.setOnClickListener {
+            val quizName = binding.quizNameInputEdittext.text.toString()
+            val numberOfQ = binding.quizNumberofquestionInputEdittext.text.toString()
+            val duration= binding.quizDurationInputEdittext.text.toString()
+            if (fromflag){
+                if (toflag){
+                    if(!quizName.isNullOrEmpty() && !numberOfQ.isNullOrEmpty() && !duration.isNullOrEmpty()){
+                        if (checkDuration(duration.toInt())){
+                            if(fromandToCondition(fromDay,fromMonth,fromYear,toDay,toMonth,toYear,fromHr,fromMin,toHr,toMin)){
+                                binding.createProgresscircle.visibility = View.VISIBLE
+                                val quizInfo = QuizInfoOfUser(quizName,quizId.toString(),fromDay,fromMonth,fromYear,toMonth,toDay,toYear,fromHr,fromMin,toHr,toMin,duration,numberOfQuestions.toString(),false)
 
+                                database.child("JoinRooms")
+                                    .child(quizId.toString())
+                                    .child("Details")
+                                    .setValue(quizInfo)
+                                database = database.child("UserProfiles")
+                                    .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                                    .child("MyQuiz")
+                                    .child(quizId.toString())
+                                    .child("Details")
+                                database.setValue(quizInfo).addOnCompleteListener {
+                                    binding.createProgresscircle.visibility = View.GONE
+                                    val unique_code=quizId.toString()
+                                    val bundle = Bundle()
+                                    bundle.putString("uniqueId",unique_code)
+                                    findNavController().navigate(R.id.action_createFragment_to_uniqueCode,bundle)
+
+                                }.addOnFailureListener {
+                                    Snackbar.make(view,"Error While creating quiz",Snackbar.LENGTH_SHORT).show()
+                                }
+                            }
+                            else{
+                                Snackbar.make(view,"Please enter a Valid From and To Date",Snackbar.LENGTH_SHORT).show()
+                            }
+                        }
+                        else{
+                            Snackbar.make(view,"Duration must be between 1 and 60 min",Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+                    else{
+                        Snackbar.make(view,"Please fill the required details",Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+                else{
+                    Toast.makeText(requireContext(),"Please Enter To Date",Toast.LENGTH_SHORT).show()
+                }
+            }
+            else{
+                Toast.makeText(requireContext(),"Please Enter From Date",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
+    private fun checkDuration(dur: Int): Boolean {
+        if(dur>1 && dur <=60){
+            return true
+        }
+        else{
+            return false
+        }
     }
 
     private fun initFromDatePicker() {
@@ -212,7 +291,7 @@ class CreateFragment : Fragment() {
     private fun initToDatePicker() {
         var mDate=""
         var dateSetListener:DatePickerDialog.OnDateSetListener = OnDateSetListener { datePicker, year, month, date ->
-            getFromDate(year,month+1,date)
+            getToDate(year,month+1,date)
             mDate = makeStringFormat(year,month+1,date)
             binding.toDatetxt.text = mDate
         }
@@ -264,6 +343,50 @@ class CreateFragment : Fragment() {
         toDay = date
         toMonth = month
         toYear = year
+    }
+    class RandomUnrepeated(from: Int, to: Int) {
+        private val numbers = (from..to).toMutableList()
+        fun nextInt(): Int {
+            val index = kotlin.random.Random.nextInt(numbers.size)
+            val number = numbers[index]
+            numbers.removeAt(index)
+
+            return number
+        }
+    }
+    private fun fromandToCondition(fromDate:Int,fromMonth:Int,fromYear:Int,toDate:Int,toMonth:Int,toYear:Int,fromHr:Int,fromMin:Int,toHr:Int,toMin:Int):Boolean{
+        if(fromYear>toYear){
+            return false
+        }
+        if(fromYear<=toYear){
+            if (fromMonth>toMonth){
+                return false
+            }
+            if (fromMonth<=toMonth){
+                if (fromDate>toDate){
+                    return false
+                }
+                if(fromDate<=toDate){
+
+                    if(fromDate == toDate){
+                        if (fromHr>toHr){
+                            return false
+                        }
+                        if(fromHr<=toHr){
+                            if(fromMin>toMin){
+                                return false
+                            }
+                            if(fromMin<=toMin){
+                                return true
+                            }
+                        }
+                    }else{
+                        return true
+                    }
+                }
+            }
+        }
+        return true
     }
 
 }
