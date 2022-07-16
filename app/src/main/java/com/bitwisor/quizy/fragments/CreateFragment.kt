@@ -8,6 +8,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CreateFragment : Fragment() {
@@ -46,6 +48,7 @@ class CreateFragment : Fragment() {
     var quizId = 0
     var quiz_duration=0
     var numberOfQuestions=0
+    var quizIdList = ArrayList<String>()
     lateinit var database: DatabaseReference
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +60,31 @@ class CreateFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        binding = FragmentCreateBinding.inflate(layoutInflater)
+        binding.createProgresscircle.visibility = View.VISIBLE
         quizId = RandomUnrepeated(1000,9999).nextInt()
+        FirebaseDatabase.getInstance().reference
+            .child("JoinRooms")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot!=null){
+                        for (data in snapshot.children){
+                            quizIdList.add(data.key.toString())
+                        }
+                        Log.e("MMMM",quizIdList.contains(quizId.toString()).toString())
+                        Log.e("MMMM",quizIdList.toString())
+                        while (quizIdList.contains(quizId.toString()) == true){
+                            quizId = RandomUnrepeated(1000,9999).nextInt()
+                            binding.createProgresscircle.visibility = View.GONE
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -378,51 +405,6 @@ class CreateFragment : Fragment() {
         else{
             Toast.makeText(requireContext(),"Quiz must have same Year",Toast.LENGTH_SHORT).show()
             return false
-        }
-        return true
-    }
-
-    private fun CurrDateTimeEnteredFromDateTime(fromDate:Int,fromMonth:Int,fromYear:Int,fromHr:Int,fromMin:Int):Boolean{
-        val c = Calendar.getInstance()
-        val curr_year = c.get(Calendar.YEAR)
-        val curr_month = c.get(Calendar.MONTH)
-        val curr_day = c.get(Calendar.DAY_OF_MONTH)
-        val curr_hour = c.get(Calendar.HOUR_OF_DAY)
-        val curr_minute = c.get(Calendar.MINUTE)
-
-        if(fromYear<curr_year){
-            return false
-        }
-        else{
-            if(fromYear>=curr_year){
-                if (fromMonth<curr_month){
-                    return false
-                }
-                else{
-                    if (fromMonth>=curr_month){
-                        if (fromDate<curr_day){
-                            return false
-                        }
-                        else{
-                            if (fromDate>=curr_day){
-                                if (fromHr<curr_hour){
-                                    return false
-                                }
-                                else{
-                                    if(fromHr>=curr_hour){
-                                        if (fromMin<curr_minute){
-                                            return false
-                                        }
-                                        else{
-                                            return true
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
         return true
     }

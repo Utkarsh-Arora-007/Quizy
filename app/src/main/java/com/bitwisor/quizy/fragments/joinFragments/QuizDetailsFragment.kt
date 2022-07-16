@@ -128,6 +128,7 @@ class QuizDetailsFragment : Fragment() {
         binding.startQuizBtn.setOnClickListener {
             var isAlreadyGiven = false
             binding.mprogresscircle.visibility = View.VISIBLE
+            displayName = binding.quizDisplayNameEditText.text.toString()
             FirebaseDatabase.getInstance().reference
                 .child("LeaderBoard")
                 .child(quizCode)
@@ -137,10 +138,9 @@ class QuizDetailsFragment : Fragment() {
                         if(snapshot.value!=null){
                             binding.mprogresscircle.visibility = View.GONE
                             isAlreadyGiven = true
-                            if (isQuizExist and !isExpired and !isAlreadyGiven){
+                            if (isQuizExist and !isExpired and !isAlreadyGiven and !displayName.isNullOrEmpty()){
                                 var bundle:Bundle = Bundle()
                                 bundle.putString("QuizCode",quizCode)
-                                displayName = binding.quizDisplayNameEditText.text.toString()
                                 database.child(quizCode).child(androidId).child("DisplayName").setValue(displayName)
                                 database.child(quizCode).child(androidId).child("Score").setValue("0")
                                 findNavController().navigate(com.bitwisor.quizy.R.id.action_quizDetailsFragment_to_playQuizFragment,bundle)
@@ -158,10 +158,9 @@ class QuizDetailsFragment : Fragment() {
                         else{
                             binding.mprogresscircle.visibility = View.GONE
                             isAlreadyGiven = false
-                            if (isQuizExist and !isExpired and !isAlreadyGiven){
+                            if (isQuizExist and !isExpired and !isAlreadyGiven and !displayName.isNullOrEmpty()){
                                 var bundle:Bundle = Bundle()
                                 bundle.putString("QuizCode",quizCode)
-                                displayName = binding.quizDisplayNameEditText.text.toString()
                                 database.child(quizCode).child(androidId).child("DisplayName").setValue(displayName)
                                 database.child(quizCode).child(androidId).child("Score").setValue("0")
                                 findNavController().navigate(com.bitwisor.quizy.R.id.action_quizDetailsFragment_to_playQuizFragment,bundle)
