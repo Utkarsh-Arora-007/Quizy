@@ -196,7 +196,9 @@ class PlayQuizFragment : Fragment(),View.OnClickListener {
     private fun finishQuiz() {
         database.child(quizCode).child(androidid).child("Score").setValue(score)
         questionNumber = numberOfQuestions+1
-        findNavController().navigate(R.id.action_playQuizFragment_to_resultFragmentFragment)
+        var bundle = Bundle()
+        bundle.putString("QuizCode",quizCode)
+        findNavController().navigate(R.id.action_playQuizFragment_to_resultFragmentFragment,bundle)
     }
 
     private fun pauseTimer() {
@@ -253,7 +255,9 @@ class PlayQuizFragment : Fragment(),View.OnClickListener {
                         // finish quiz
                         disableClick()
                         Toast.makeText(requireContext(),"You have completed the quiz", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_playQuizFragment_to_resultFragmentFragment)
+                        var bundle = Bundle()
+                        bundle.putString("QuizCode",quizCode)
+                        findNavController().navigate(R.id.action_playQuizFragment_to_resultFragmentFragment,bundle)
                     }
                     }
                 }

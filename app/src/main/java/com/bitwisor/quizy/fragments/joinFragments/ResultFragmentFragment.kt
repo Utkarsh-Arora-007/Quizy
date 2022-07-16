@@ -1,60 +1,103 @@
 package com.bitwisor.quizy.fragments.joinFragments
 
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.R
+import com.bitwisor.quizy.databinding.FragmentResultFragmentBinding
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ResultFragmentFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ResultFragmentFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    lateinit var binding:FragmentResultFragmentBinding
+    var quizName=""
+    var numberOfQuestion:String=""
+    var displayName =""
+    var score:String =""
+    var quizCode=""
+    var androidId=""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_result_fragment, container, false)
+        binding = FragmentResultFragmentBinding.inflate(layoutInflater)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ResultFragmentFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ResultFragmentFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.resultMprogress.visibility = View.VISIBLE
+        var bundle =arguments
+        androidId= Settings.Secure.getString(requireActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        if (bundle!=null){
+            quizCode = bundle.getString("QuizCode","None")
+        }
+        binding.resultsBackbtn.setOnClickListener { 
+            findNavController().popBackStack()
+        }
+        binding.goToHomeBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        Log.e("MYQUIZCODE",quizCode)
+        FirebaseDatabase.getInstance().reference
+            .child("JoinRooms")
+            .child(quizCode)
+            .child("Details")
+            .addValueEventListener(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot!=null){
+                        quizName = "${snapshot.child("quizName").value}"
+                        numberOfQuestion = "${snapshot.child("numberOfQuestions").value}"
+                        FirebaseDatabase.getInstance().reference
+                            .child("LeaderBoard")
+                            .child(quizCode)
+                            .child(androidId)
+                            .addValueEventListener(object :ValueEventListener{
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    if (snapshot!=null){
+                                        binding.resultMprogress.visibility = View.GONE
+                                        displayName = "${snapshot.child("DisplayName").value}"
+                                        score = "${snapshot.child("Score").value}"
+
+                                        binding.resultQuizNametxtview.text = quizName
+                                        binding.resultQuizNoQuestiontxtview.text = numberOfQuestion
+                                        binding.resultQuizDurationview.text = displayName
+                                        binding.resultQuizAvailtxtview.text = score
+                                    }
+                                    else{
+                                        Snackbar.make(view,"Some Error Occured",Snackbar.LENGTH_SHORT).show()
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    Snackbar.make(view,"Database Error Occured",Snackbar.LENGTH_SHORT).show()
+                                }
+
+                            })
+                    }
+                    else{
+                        Snackbar.make(view,"Database Error Occured",Snackbar.LENGTH_SHORT).show()
+                    }
                 }
-            }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Snackbar.make(view,"Some Error Occured",Snackbar.LENGTH_SHORT).show()
+                }
+
+            })
+
     }
+
+
 }

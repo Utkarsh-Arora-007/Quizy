@@ -2,6 +2,7 @@ package com.bitwisor.quizy.fragments.joinFragments
 
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -186,14 +187,23 @@ class QuizDetailsFragment : Fragment() {
         }
     }
     private fun checkQuizisValidorNot(toDate:Long,toMonth:Long,toYear:Long,toHr:Long,toMin:Long):Boolean{
-        return true
         val c = Calendar.getInstance()
         val curr_year = c.get(Calendar.YEAR)
         val curr_month = c.get(Calendar.MONTH)
         val curr_day = c.get(Calendar.DAY_OF_MONTH)
         val curr_hour = c.get(Calendar.HOUR_OF_DAY)
         val curr_minute = c.get(Calendar.MINUTE)
-        if (curr_year>toDate){
+        Log.e("main","curr_day = $curr_day")
+        Log.e("main","$curr_month")
+        Log.e("main","curr_month = $curr_year")
+        Log.e("main","curr_minute = $curr_minute")
+        Log.e("main","curr_hour = $curr_hour")
+        Log.e("main","toDate = $toDate")
+        Log.e("main","toMonth = $toMonth")
+        Log.e("main","toYear = $toYear")
+        Log.e("main","toMin = $toMin")
+        Log.e("main","toHr = $toHr")
+        if (curr_year>toYear){
             return false
         }
         if (curr_year<=toYear.toInt()){
