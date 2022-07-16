@@ -1,15 +1,18 @@
 package com.bitwisor.quizy.fragments
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.JoinActivity
 import com.bitwisor.quizy.LoginActivity
+import com.bitwisor.quizy.MainActivity
 import com.bitwisor.quizy.R
 import com.bitwisor.quizy.databinding.FragmentHomeBinding
 import com.bitwisor.quizy.utils.User
@@ -67,23 +70,13 @@ class HomeFragment : Fragment() {
 
             if(firebaseAuth.currentUser!=null)
             {
-                database.reference.child("UserProfiles").child(FirebaseAuth.getInstance().uid!!)
-                    .addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            val users: User? = snapshot.getValue(User::class.java)
-                            if (users != null) {
-                                Picasso.get()
-                                    .load(users.profilepic)
-                                    .placeholder(R.drawable.scientist).into(binding.profileImage)
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {}
-                    })
-
-
+                Picasso.get()
+                    .load(firebaseAuth!!.currentUser!!.photoUrl)
+                    .placeholder(R.drawable.ic_baseline_account_circle_24).into(binding.profileImage)
+                binding.profileImage.setOnClickListener {
+                    showDialog("Are you sure want to logout?")
+                }
             }
-
 
 
 
@@ -98,6 +91,25 @@ class HomeFragment : Fragment() {
                 requireActivity().finish()
             }
         }
+    }
+    private fun showDialog(title: String) {
+        val dialog = Dialog(requireActivity())
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.custom_layout)
+        val body = dialog.findViewById(R.id.body) as TextView
+        body.text = title
+        val yesBtn = dialog.findViewById(R.id.yesbtn) as TextView
+        val noBtn = dialog.findViewById(R.id.nobtn) as TextView
+        yesBtn.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            var  i = Intent(requireActivity(),MainActivity::class.java)
+            startActivity(i)
+            requireActivity().finishAffinity()
+            dialog.dismiss()
+        }
+        noBtn.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+
     }
 
 }
