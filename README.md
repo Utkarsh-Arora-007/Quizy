@@ -10,4 +10,12 @@ After Quiz is being created you can share the Quiz link and through this Link th
  
  # QUIZY MOBILE APLLICATION
  Solving a problem may be the most important part of a mission, But having the power in our hands to visualise and track the progress is important as well. That is why we came up with our mobile application. QUIZY Application is a dynamic mobile application built completely on Android Studio.
+ 
+ ## Features
+
+- Signup and Login via Google
+- Live previews
+- Fullscreen mode
+- 
+
 
