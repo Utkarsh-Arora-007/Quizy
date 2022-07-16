@@ -219,7 +219,7 @@ class CreateFragment : Fragment() {
                     if(!quizName.isNullOrEmpty() && !numberOfQ.isNullOrEmpty() && !duration.isNullOrEmpty()){
                         if (checkDuration(duration.toInt())  ){
                             if(fromandToCondition(fromDay,fromMonth,fromYear,toDay,toMonth,toYear,fromHr,fromMin,toHr,toMin)
-                                && CurrDateTimeEnteredFromDateTime(fromDay,fromMonth,fromYear,fromHr,fromMin)){
+                               ){
                                 binding.createProgresscircle.visibility = View.VISIBLE
                                 val quizInfo = QuizInfoOfUser(quizName,quizId.toString(),fromDay,fromMonth,fromYear,toMonth,toDay,toYear,fromHr,fromMin,toHr,toMin,duration,numberOfQuestions.toString(),false)
 
