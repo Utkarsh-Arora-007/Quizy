@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_homeFragment_to_createFragment"
             app:destination="@id/createFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_totalQuizzesInfoFragment"
+            app:destination="@id/totalQuizzesInfoFragment" />
 
     </fragment>
     <fragment
@@ -34,4 +37,9 @@
         android:id="@+id/uniqueCode"
         android:name="com.bitwisor.quizy.fragments.UniqueCode"
         android:label="UniqueCode" />
+    <fragment
+        android:id="@+id/totalQuizzesInfoFragment"
+        android:name="com.bitwisor.quizy.fragments.TotalQuizzesInfoFragment"
+        android:label="fragment_total_quizzes_info"
+        tools:layout="@layout/fragment_total_quizzes_info" />
 </navigation>
