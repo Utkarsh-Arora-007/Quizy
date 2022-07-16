@@ -1,5 +1,6 @@
 package com.bitwisor.quizy.fragments.joinFragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.bitwisor.quizy.MainActivity
 import com.bitwisor.quizy.R
 import com.bitwisor.quizy.databinding.FragmentResultFragmentBinding
 import com.google.android.material.snackbar.Snackbar
@@ -47,7 +49,9 @@ class ResultFragmentFragment : Fragment() {
             findNavController().popBackStack()
         }
         binding.goToHomeBtn.setOnClickListener {
-            findNavController().popBackStack()
+            var i = Intent(requireActivity(),MainActivity::class.java)
+            startActivity(i)
+            requireActivity().finishAffinity()
         }
         Log.e("MYQUIZCODE",quizCode)
         FirebaseDatabase.getInstance().reference
