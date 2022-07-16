@@ -217,8 +217,9 @@ class CreateFragment : Fragment() {
             if (fromflag){
                 if (toflag){
                     if(!quizName.isNullOrEmpty() && !numberOfQ.isNullOrEmpty() && !duration.isNullOrEmpty()){
-                        if (checkDuration(duration.toInt())){
-                            if(fromandToCondition(fromDay,fromMonth,fromYear,toDay,toMonth,toYear,fromHr,fromMin,toHr,toMin)){
+                        if (checkDuration(duration.toInt())  ){
+                            if(fromandToCondition(fromDay,fromMonth,fromYear,toDay,toMonth,toYear,fromHr,fromMin,toHr,toMin)
+                                && CurrDateTimeEnteredFromDateTime(fromDay,fromMonth,fromYear,fromHr,fromMin)){
                                 binding.createProgresscircle.visibility = View.VISIBLE
                                 val quizInfo = QuizInfoOfUser(quizName,quizId.toString(),fromDay,fromMonth,fromYear,toMonth,toDay,toYear,fromHr,fromMin,toHr,toMin,duration,numberOfQuestions.toString(),false)
 
@@ -266,7 +267,7 @@ class CreateFragment : Fragment() {
     }
 
     private fun checkDuration(dur: Int): Boolean {
-        if(dur>1 && dur <=60){
+        if(dur>=1 && dur <=60){
             return true
         }
         else{
@@ -388,5 +389,48 @@ class CreateFragment : Fragment() {
         }
         return true
     }
+    private fun CurrDateTimeEnteredFromDateTime(fromDate:Int,fromMonth:Int,fromYear:Int,fromHr:Int,fromMin:Int):Boolean{
+        val c = Calendar.getInstance()
+        val curr_year = c.get(Calendar.YEAR)
+        val curr_month = c.get(Calendar.MONTH)
+        val curr_day = c.get(Calendar.DAY_OF_MONTH)
+        val curr_hour = c.get(Calendar.HOUR_OF_DAY)
+        val curr_minute = c.get(Calendar.MINUTE)
 
+        if(fromYear<curr_year){
+            return false
+        }
+        else{
+            if(fromYear>=curr_year){
+                if (fromMonth<curr_month){
+                    return false
+                }
+                else{
+                    if (fromMonth>=curr_month){
+                        if (fromDate<curr_day){
+                            return false
+                        }
+                        else{
+                            if (fromDate>=curr_day){
+                                if (fromHr<curr_hour){
+                                    return false
+                                }
+                                else{
+                                    if(fromHr>=curr_hour){
+                                        if (fromMin<curr_minute){
+                                            return false
+                                        }
+                                        else{
+                                            return true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true
+    }
 }

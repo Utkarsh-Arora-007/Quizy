@@ -142,7 +142,7 @@
                 android:id="@+id/outlinedTextField3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="10 mins"
+                android:hint="Ex. 10 mins"
                 app:layout_constraintTop_toBottomOf="@+id/quiz_duration_txt"
                 app:layout_constraintLeft_toLeftOf="@id/quiz_duration_txt"
                 app:layout_constraintRight_toRightOf="@id/quiz_duration_txt"
