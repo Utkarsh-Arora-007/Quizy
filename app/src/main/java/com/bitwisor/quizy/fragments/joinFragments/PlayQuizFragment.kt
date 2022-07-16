@@ -195,6 +195,7 @@ class PlayQuizFragment : Fragment(),View.OnClickListener {
 
     private fun finishQuiz() {
         database.child(quizCode).child(androidid).child("Score").setValue(score)
+        questionNumber = numberOfQuestions+1
         findNavController().navigate(R.id.action_playQuizFragment_to_resultFragmentFragment)
     }
 
