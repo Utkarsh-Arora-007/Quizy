@@ -51,6 +51,7 @@ class UniqueCode : Fragment() {
             requireActivity().finishAffinity()
         }
         whatsapp.setOnClickListener {
+
             openWhatsapp()
         }
 
