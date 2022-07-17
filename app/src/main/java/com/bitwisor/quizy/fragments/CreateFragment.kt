@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.R
@@ -49,17 +50,21 @@ class CreateFragment : Fragment() {
     var quiz_duration=0
     var numberOfQuestions=0
     var quizIdList = ArrayList<String>()
+    var x = 0
+    var clicked = false
     lateinit var database: DatabaseReference
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCreateBinding.inflate(layoutInflater)
+
         return binding.root
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        Log.e("CALLL","onAtachCALLL")
         binding = FragmentCreateBinding.inflate(layoutInflater)
         binding.createProgresscircle.visibility = View.VISIBLE
         quizId = RandomUnrepeated(1000,9999).nextInt()
@@ -75,6 +80,7 @@ class CreateFragment : Fragment() {
                         Log.e("MMMM",quizIdList.toString())
                         while (quizIdList.contains(quizId.toString()) == true){
                             quizId = RandomUnrepeated(1000,9999).nextInt()
+                            Log.e("WhileLoop",quizId.toString())
                             binding.createProgresscircle.visibility = View.GONE
                         }
                     }
@@ -90,7 +96,7 @@ class CreateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         database = FirebaseDatabase.getInstance().reference
-        binding.numberOfQuestionsAdded.text = "Count : $numberOfQuestions"
+        binding.numberOfQuestionsAdded.text = " "
         binding.createBackbtn.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -198,19 +204,32 @@ class CreateFragment : Fragment() {
             // dialog show the dialog to user
             timePicker.show()
         }
-
+        if (clicked == true){
+            binding.addQbtn.background = ContextCompat.getDrawable(requireContext(),R.drawable.graay)
+            binding.addQbtn.isClickable = false
+        }
         binding.addQbtn.setOnClickListener {
-            var numberOfQuestion = binding.quizNumberofquestionInputEdittext.text.toString()
-            if(!numberOfQuestion.isNullOrEmpty()){
-                var bundle = Bundle()
-                bundle.putInt("NoOfQuestion",binding.quizNumberofquestionInputEdittext.text.toString().toInt())
-                bundle.putInt("QuizId",quizId)
-                bundle.putString("QuizName",binding.quizNameInputEdittext.text.toString())// Added by Shivendu, to show the quiz name at Add Question Fragment.
-                findNavController().navigate(R.id.action_createFragment_to_addQuestionsFragment,bundle)
+            if (clicked){
+                binding.addQbtn.background = ContextCompat.getDrawable(requireContext(),R.drawable.graay)
+                binding.addQbtn.isClickable = false
+                Toast.makeText(requireContext(),"You can add Quiz only Once",Toast.LENGTH_SHORT).show()
             }
             else{
-                Snackbar.make(view,"Please Enter Number Of Questions",Snackbar.LENGTH_SHORT).show()
+                var numberOfQuestion = binding.quizNumberofquestionInputEdittext.text.toString()
+                if(!numberOfQuestion.isNullOrEmpty()){
+                    var bundle = Bundle()
+                    bundle.putInt("NoOfQuestion",binding.quizNumberofquestionInputEdittext.text.toString().toInt())
+                    bundle.putInt("QuizId",quizId)
+                    bundle.putString("QuizName",binding.quizNameInputEdittext.text.toString())// Added by Shivendu, to show the quiz name at Add Question Fragment.
+                    clicked = true
+                    findNavController().navigate(R.id.action_createFragment_to_addQuestionsFragment,bundle)
+
+                }
+                else{
+                    Snackbar.make(view,"Please Enter Number Of Questions",Snackbar.LENGTH_SHORT).show()
+                }
             }
+
 
         }
         binding.createQuizBtn.setOnClickListener {
@@ -357,9 +376,7 @@ class CreateFragment : Fragment() {
 
             return number
         }
-        fun updateCount(){
-            var obj = CreateFragment().updateCCount()
-        }
+
     }
     private fun NewValidationCondition(fromDate:Int,fromMonth:Int,fromYear:Int,toDate:Int,toMonth:Int,toYear:Int,fromHr:Int,fromMin:Int,toHr:Int,toMin:Int):Boolean{
        if(fromDate == toDate && fromMonth == toMonth && fromYear == toYear ){
@@ -387,31 +404,5 @@ class CreateFragment : Fragment() {
         }
         return true
     }
-    private fun updateCCount(){
-        binding.createProgresscircle.visibility = View.VISIBLE
-        FirebaseDatabase.getInstance().reference
-            .child("UserProfiles")
-            .child(FirebaseAuth.getInstance().currentUser!!.uid)
-            .child("MyQuiz")
-            .child(quizId.toString())
-            .child("Questions")
-            .addValueEventListener(object :ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    binding.createProgresscircle.visibility = View.GONE
-                    if (snapshot!=null){
-                        numberOfQuestions = snapshot.childrenCount.toInt()
 
-                    }
-                    else{
-                        numberOfQuestions = 0
-                    }
-                    binding.numberOfQuestionsAdded.text = "Count : $numberOfQuestions"
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Snackbar.make(requireView(),"Database Error",Snackbar.LENGTH_SHORT).show()
-                }
-
-            })
-    }
 }
