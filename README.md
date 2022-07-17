@@ -8,12 +8,14 @@ After Quiz is being created you can share the Quiz link and through this Link th
  - [Create Quiz](https://github.com/shivenducs1136/Quizy/blob/main/app/src/main/java/com/bitwisor/quizy/fragments/CreateFragment.kt)
  - [Join QUIZ](https://github.com/shivenducs1136/Quizy/blob/main/app/src/main/java/com/bitwisor/quizy/fragments/joinFragments/JoinHomeFragment.kt)
  - [LeaderBoard](https://github.com/shivenducs1136/Quizy/commit/35d4ab61d243096949e79fc2113fa05c878db7b3)
+ 
+  ![](https://github.com/shivenducs1136/Quizy/blob/main/Images/img3.jpg)
 ***
  # QUIZY MOBILE APLLICATION
  Solving a problem may be the most important part of a mission, But having the power in our hands to visualise and track the progress is important as well. That is why we came up with our mobile application. QUIZY Application is a dynamic mobile application built completely on Android Studio.
 ***
 # App Permissions
-There is no extra permissions are required. There is just a requirement of an active [INTERNET]() coonection.
+There is no extra permissions required. There is just a requirement of an active [INTERNET]() coonection.
 ***
 ## Features
 - Signup and Login via Google (One Tap Login)
