@@ -35,8 +35,7 @@ There is no extra permissions required. There is just a requirement of an active
 -----------------------------------------------------------------------------
 ![join quiz](https://github.com/shivenducs1136/Quizy/blob/main/Images/img2.jpg)
 --------------------------------------------------------------------------------
-***
-
+![](https://github.com/shivenducs1136/Quizy/blob/main/Images/leaderboard.jpg)
 ***
 ## DOWNLOAD
 Quizy Mobile Application is packed with lot of features that allows you to create a quiz and keep track of records of users who attempts it. 
