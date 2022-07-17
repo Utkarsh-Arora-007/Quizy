@@ -31,6 +31,7 @@ class ResultFragmentFragment : Fragment() {
     var quizCode=""
     var androidId=""
     lateinit var pieChart:PieChart
+    lateinit var outOfScore:String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,6 +44,7 @@ class ResultFragmentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.resultMprogress.visibility = View.VISIBLE
         var bundle =arguments
+        var totalScore:Int
         pieChart=binding.piechart
         androidId= Settings.Secure.getString(requireActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
 
@@ -78,10 +80,17 @@ class ResultFragmentFragment : Fragment() {
                                         displayName = "${snapshot.child("DisplayName").value}"
                                         score = "${snapshot.child("Score").value}"
 
+                                        totalScore=numberOfQuestion.toInt()*10
+
+                                        outOfScore="$score/$totalScore"
+
                                         binding.resultQuizNametxtview.text = quizName
                                         binding.resultQuizNoQuestiontxtview.text = numberOfQuestion
                                         binding.resultQuizDurationview.text = displayName
-                                        binding.resultQuizAvailtxtview.text = score
+                                        binding.resultQuizAvailtxtview.text = outOfScore
+
+
+
 
 
                                         pieChart.addPieSlice(
