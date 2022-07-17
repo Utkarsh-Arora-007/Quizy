@@ -198,7 +198,6 @@ class PlayQuizFragment : Fragment(),View.OnClickListener {
         questionNumber = numberOfQuestions+1
         var bundle = Bundle()
         bundle.putString("QuizCode",quizCode)
-        pauseTimer()
         findNavController().navigate(R.id.action_playQuizFragment_to_resultFragmentFragment,bundle)
     }
 
@@ -258,7 +257,6 @@ class PlayQuizFragment : Fragment(),View.OnClickListener {
                         Toast.makeText(requireContext(),"You have completed the quiz", Toast.LENGTH_SHORT).show()
                         var bundle = Bundle()
                         bundle.putString("QuizCode",quizCode)
-                        pauseTimer()
                         findNavController().navigate(R.id.action_playQuizFragment_to_resultFragmentFragment,bundle)
                     }
                     }
@@ -304,7 +302,6 @@ class PlayQuizFragment : Fragment(),View.OnClickListener {
     private fun setQuestion(){
         if(questionNumber>numberOfQuestions){
             Snackbar.make(binding.palyqwew,"Quiz already given", Snackbar.LENGTH_SHORT).show()
-            pauseTimer()
             findNavController().popBackStack()
         }else{
 

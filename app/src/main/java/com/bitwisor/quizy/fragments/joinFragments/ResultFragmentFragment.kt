@@ -99,6 +99,7 @@ class ResultFragmentFragment : Fragment() {
                                         )
 
                                         pieChart.startAnimation();
+                                        
                                     }
                                     else{
                                         Snackbar.make(view,"Some Error Occured",Snackbar.LENGTH_SHORT).show()

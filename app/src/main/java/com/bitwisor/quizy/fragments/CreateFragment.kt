@@ -8,7 +8,6 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.R
@@ -26,7 +24,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class CreateFragment : Fragment() {
@@ -49,54 +46,48 @@ class CreateFragment : Fragment() {
     var quizId = 0
     var quiz_duration=0
     var numberOfQuestions=0
-    var quizIdList = ArrayList<String>()
-    var x = 0
-    var clicked = false
     lateinit var database: DatabaseReference
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCreateBinding.inflate(layoutInflater)
-
         return binding.root
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        Log.e("CALLL","onAtachCALLL")
-        binding = FragmentCreateBinding.inflate(layoutInflater)
-        binding.createProgresscircle.visibility = View.VISIBLE
         quizId = RandomUnrepeated(1000,9999).nextInt()
-        FirebaseDatabase.getInstance().reference
-            .child("JoinRooms")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot!=null){
-                        for (data in snapshot.children){
-                            quizIdList.add(data.key.toString())
-                        }
-                        Log.e("MMMM",quizIdList.contains(quizId.toString()).toString())
-                        Log.e("MMMM",quizIdList.toString())
-                        while (quizIdList.contains(quizId.toString()) == true){
-                            quizId = RandomUnrepeated(1000,9999).nextInt()
-                            Log.e("WhileLoop",quizId.toString())
-                            binding.createProgresscircle.visibility = View.GONE
-                        }
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-            })
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         database = FirebaseDatabase.getInstance().reference
-        binding.numberOfQuestionsAdded.text = " "
+        binding.createProgresscircle.visibility = View.VISIBLE
+        FirebaseDatabase.getInstance().reference
+            .child("UserProfiles")
+            .child(FirebaseAuth.getInstance().currentUser!!.uid)
+            .child("MyQuiz")
+            .child(quizId.toString())
+            .child("Questions")
+            .addValueEventListener(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    binding.createProgresscircle.visibility = View.GONE
+                    if (snapshot!=null){
+                        numberOfQuestions = snapshot.childrenCount.toInt()
+
+                    }
+                    else{
+                        numberOfQuestions = 0
+                    }
+                    binding.numberOfQuestionsAdded.text = "Count : $numberOfQuestions"
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Snackbar.make(view,"Database Error",Snackbar.LENGTH_SHORT).show()
+                }
+
+            })
         binding.createBackbtn.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -204,32 +195,19 @@ class CreateFragment : Fragment() {
             // dialog show the dialog to user
             timePicker.show()
         }
-        if (clicked == true){
-            binding.addQbtn.background = ContextCompat.getDrawable(requireContext(),R.drawable.graay)
-            binding.addQbtn.isClickable = false
-        }
+
         binding.addQbtn.setOnClickListener {
-            if (clicked){
-                binding.addQbtn.background = ContextCompat.getDrawable(requireContext(),R.drawable.graay)
-                binding.addQbtn.isClickable = false
-                Toast.makeText(requireContext(),"You can add Quiz only Once",Toast.LENGTH_SHORT).show()
+            var numberOfQuestion = binding.quizNumberofquestionInputEdittext.text.toString()
+            if(!numberOfQuestion.isNullOrEmpty()){
+                var bundle = Bundle()
+                bundle.putInt("NoOfQuestion",binding.quizNumberofquestionInputEdittext.text.toString().toInt())
+                bundle.putInt("QuizId",quizId)
+                bundle.putString("QuizName",binding.quizNameInputEdittext.text.toString())// Added by Shivendu, to show the quiz name at Add Question Fragment.
+                findNavController().navigate(R.id.action_createFragment_to_addQuestionsFragment,bundle)
             }
             else{
-                var numberOfQuestion = binding.quizNumberofquestionInputEdittext.text.toString()
-                if(!numberOfQuestion.isNullOrEmpty()){
-                    var bundle = Bundle()
-                    bundle.putInt("NoOfQuestion",binding.quizNumberofquestionInputEdittext.text.toString().toInt())
-                    bundle.putInt("QuizId",quizId)
-                    bundle.putString("QuizName",binding.quizNameInputEdittext.text.toString())// Added by Shivendu, to show the quiz name at Add Question Fragment.
-                    clicked = true
-                    findNavController().navigate(R.id.action_createFragment_to_addQuestionsFragment,bundle)
-
-                }
-                else{
-                    Snackbar.make(view,"Please Enter Number Of Questions",Snackbar.LENGTH_SHORT).show()
-                }
+                Snackbar.make(view,"Please Enter Number Of Questions",Snackbar.LENGTH_SHORT).show()
             }
-
 
         }
         binding.createQuizBtn.setOnClickListener {
@@ -240,7 +218,7 @@ class CreateFragment : Fragment() {
                 if (toflag){
                     if(!quizName.isNullOrEmpty() && !numberOfQ.isNullOrEmpty() && !duration.isNullOrEmpty()){
                         if (checkDuration(duration.toInt())  ){
-                            if(NewValidationCondition(fromDay,fromMonth,fromYear,toDay,toMonth,toYear,fromHr,fromMin,toHr,toMin)
+                            if(fromandToCondition(fromDay,fromMonth,fromYear,toDay,toMonth,toYear,fromHr,fromMin,toHr,toMin)
                                ){
                                 binding.createProgresscircle.visibility = View.VISIBLE
                                 val quizInfo = QuizInfoOfUser(quizName,quizId.toString(),fromDay,fromMonth,fromYear,toMonth,toDay,toYear,fromHr,fromMin,toHr,toMin,duration,numberOfQuestions.toString(),false)
@@ -376,33 +354,83 @@ class CreateFragment : Fragment() {
 
             return number
         }
-
     }
-    private fun NewValidationCondition(fromDate:Int,fromMonth:Int,fromYear:Int,toDate:Int,toMonth:Int,toYear:Int,fromHr:Int,fromMin:Int,toHr:Int,toMin:Int):Boolean{
-       if(fromDate == toDate && fromMonth == toMonth && fromYear == toYear ){
-           if (fromHr>toHr){
-               return false
-           }
-           else{
-               if (fromHr<=toHr){
-                   return fromMin < toMin
-               }
-           }
-       }
-        if(fromMonth == toMonth && fromYear == toYear) return fromDate <= toDate
-        if (fromYear == toYear){
+    private fun fromandToCondition(fromDate:Int,fromMonth:Int,fromYear:Int,toDate:Int,toMonth:Int,toYear:Int,fromHr:Int,fromMin:Int,toHr:Int,toMin:Int):Boolean{
+        if(fromYear>toYear){
+            return false
+        }
+        if(fromYear<=toYear){
             if (fromMonth>toMonth){
                 return false
             }
-            else{
-                return fromMonth<=toMonth
+            if (fromMonth<=toMonth){
+                if (fromDate>toDate){
+                    return false
+                }
+                if(fromDate<=toDate){
+
+                    if(fromDate == toDate){
+                        if (fromHr>toHr){
+                            return false
+                        }
+                        if(fromHr<=toHr){
+                            if(fromMin>toMin){
+                                return false
+                            }
+                            if(fromMin<=toMin){
+                                return true
+                            }
+                        }
+                    }else{
+                        return true
+                    }
+                }
             }
-        }
-        else{
-            Toast.makeText(requireContext(),"Quiz must have same Year",Toast.LENGTH_SHORT).show()
-            return false
         }
         return true
     }
+    private fun CurrDateTimeEnteredFromDateTime(fromDate:Int,fromMonth:Int,fromYear:Int,fromHr:Int,fromMin:Int):Boolean{
+        val c = Calendar.getInstance()
+        val curr_year = c.get(Calendar.YEAR)
+        val curr_month = c.get(Calendar.MONTH)
+        val curr_day = c.get(Calendar.DAY_OF_MONTH)
+        val curr_hour = c.get(Calendar.HOUR_OF_DAY)
+        val curr_minute = c.get(Calendar.MINUTE)
 
+        if(fromYear<curr_year){
+            return false
+        }
+        else{
+            if(fromYear>=curr_year){
+                if (fromMonth<curr_month){
+                    return false
+                }
+                else{
+                    if (fromMonth>=curr_month){
+                        if (fromDate<curr_day){
+                            return false
+                        }
+                        else{
+                            if (fromDate>=curr_day){
+                                if (fromHr<curr_hour){
+                                    return false
+                                }
+                                else{
+                                    if(fromHr>=curr_hour){
+                                        if (fromMin<curr_minute){
+                                            return false
+                                        }
+                                        else{
+                                            return true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true
+    }
 }

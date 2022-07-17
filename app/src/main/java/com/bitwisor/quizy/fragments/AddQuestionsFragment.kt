@@ -1,23 +1,19 @@
 package com.bitwisor.quizy.fragments
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.LoginActivity
-import com.bitwisor.quizy.MainActivity
 import com.bitwisor.quizy.R
 import com.bitwisor.quizy.databinding.FragmentAddQuestionsBinding
 import com.bitwisor.quizy.utils.QuizQuestions
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 
@@ -40,7 +36,6 @@ class AddQuestionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAddQuestionsBinding.inflate(layoutInflater)
-
         return binding.root
     }
 
@@ -48,7 +43,6 @@ class AddQuestionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.mprogress.visibility = View.GONE
         binding.donelottie.visibility = View.GONE
-
         var bundle = this.arguments
         if(bundle!=null){
             totalQuestions = bundle.getInt("NoOfQuestion")
@@ -71,18 +65,24 @@ class AddQuestionsFragment : Fragment() {
         }
         binding.addnextQuestionbtn.setOnClickListener {
             val qnu = questionNo
-
+            if(qnu>=totalQuestions){
+                binding.questionNumber.text = "Done"
+                binding.addnextQuestionbtn.visibility = View.GONE
+                binding.doneQuestionAddingbtn.visibility = View.VISIBLE
+                binding.qna.visibility = View.INVISIBLE
+                binding.donelottie.visibility = View.VISIBLE
+            }
             question = binding.questionedittxt.text.toString()
             option1 = binding.optionAedittxt.text.toString()
             option2 = binding.optionBedittxt.text.toString()
             option3 = binding.optionCedittxt.text.toString()
             option4 = binding.optionDedittxt.text.toString()
             correctOption = binding.correctOptiontxt.text.toString()
-            if(!question.isNullOrEmpty() &&
-                !option1.isNullOrEmpty() &&
-                !option2.isNullOrEmpty() &&
-                !option3.isNullOrEmpty() &&
-                !option4.isNullOrEmpty() &&
+            if(!question.isNullOrEmpty() and
+                !option1.isNullOrEmpty() and
+                !option2.isNullOrEmpty() and
+                !option3.isNullOrEmpty() and
+                !option4.isNullOrEmpty() and
                 !correctOption.isNullOrEmpty()){
                 var options = arrayOf(option1,option2,option3,option4)
                 if(isCorrectOptionValid(options,correctOption)){
@@ -152,7 +152,6 @@ class AddQuestionsFragment : Fragment() {
         }
         binding.doneQuestionAddingbtn.setOnClickListener {
             findNavController().popBackStack()
-
         }
     }
 
