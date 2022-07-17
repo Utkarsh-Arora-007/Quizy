@@ -19,7 +19,7 @@ There is no extra permissions required. There is just a requirement of an active
 ***
 ## Features
 - Signup and Login via Google (One Tap Login)
-- Shows Correct And Incorrect Scores Using Pichart
+- Shows Correct And Incorrect Scores Using Piechart
 - Fullscreen mode
 - Admin Have Track of Scores Of Users(Over LeaderBoard)
 - Shows Response Is Right Or Wrong Immediately After Attempting
