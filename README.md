@@ -29,7 +29,7 @@ There is no extra permissions are required. There is just a requirement of an ac
 - [FIREBASE REALTIME DATABASE](https://firebase.google.com/docs/database)
 ***
 ## SCREENSHOTS
-![home](Images/WhatsApp%20Image%202022-07-16%20at%209.36.42%20PM.jpeg)
+![home](https://github.com/shivenducs1136/Quizy/blob/main/Images/img1.jpg)
 
 ***
 ## DOWNLOAD
