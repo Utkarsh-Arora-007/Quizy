@@ -30,6 +30,10 @@ There is no extra permissions are required. There is just a requirement of an ac
 ***
 ## SCREENSHOTS
 ![home](https://github.com/shivenducs1136/Quizy/blob/main/Images/img1.jpg)
+-----------------------------------------------------------------------------
+![join quiz](https://github.com/shivenducs1136/Quizy/blob/main/Images/img2.jpg)
+--------------------------------------------------------------------------------
+***
 
 ***
 ## DOWNLOAD
