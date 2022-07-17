@@ -98,7 +98,7 @@ class CreateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         database = FirebaseDatabase.getInstance().reference
-        binding.numberOfQuestionsAdded.text = "Count : $numberOfQuestions"
+        binding.numberOfQuestionsAdded.text = " "
         binding.createBackbtn.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -240,6 +240,7 @@ class CreateFragment : Fragment() {
             val quizName = binding.quizNameInputEdittext.text.toString()
             val numberOfQ = binding.quizNumberofquestionInputEdittext.text.toString()
             val duration= binding.quizDurationInputEdittext.text.toString()
+            numberOfQuestions = numberOfQ.toInt()
             if (fromflag ){
                     if (fromTime){
                         if (toflag){

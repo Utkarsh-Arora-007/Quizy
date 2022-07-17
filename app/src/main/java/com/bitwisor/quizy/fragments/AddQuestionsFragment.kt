@@ -84,66 +84,72 @@ class AddQuestionsFragment : Fragment() {
                 !option3.isNullOrEmpty() &&
                 !option4.isNullOrEmpty() &&
                 !correctOption.isNullOrEmpty()){
-                var options = arrayOf(option1,option2,option3,option4)
-                if(isCorrectOptionValid(options,correctOption)){
-                    binding.mprogress.visibility = View.VISIBLE
-                    val questionData = QuizQuestions(question,option1,option2,option3,option4,correctOption)
+                if (checkoptions(option1,option2,option3,option4)){
 
-                    database.reference.child("UserProfiles")
-                        .child(firebaseAuth.currentUser!!.uid)
-                        .child("MyQuiz")
-                        .child(quizId.toString())
-                        .child("Questions")
-                        .child(qnu.toString())
-                        .setValue(questionData)
-                        .addOnCompleteListener {
-                            if (it.isSuccessful){
-                                database.reference.child("JoinRooms")
-                                    .child(quizId.toString())
-                                    .child("Questions")
-                                    .child(qnu.toString())
-                                    .setValue(questionData)
-                                    .addOnCompleteListener {
-                                        binding.mprogress.visibility = View.GONE
-                                        Snackbar.make(view,"Question $qnu added",Snackbar.LENGTH_SHORT).show()
-                                        binding.questionedittxt.text.clear()
-                                        binding.optionAedittxt.text.clear()
-                                        binding.optionBedittxt.text.clear()
-                                        binding.optionCedittxt.text.clear()
-                                        binding.optionDedittxt.text.clear()
-                                        binding.correctOptiontxt.text.clear()
-                                        binding.progressBar1.progress = questionNo
-                                        questionNo++
-                                        binding.questionNumber.text = "Q.No. $questionNo"
-                                        // correct option options me se he hona chahiye
-                                        if(questionNo>totalQuestions){
-                                            binding.questionNumber.text = "Done"
-                                            binding.donelottie.visibility = View.VISIBLE
-                                            binding.addnextQuestionbtn.visibility = View.GONE
-                                            binding.doneQuestionAddingbtn.visibility = View.VISIBLE
-                                            binding.qna.visibility = View.INVISIBLE
+                    var options = arrayOf(option1,option2,option3,option4)
+                    if(isCorrectOptionValid(options,correctOption)){
+                        binding.mprogress.visibility = View.VISIBLE
+                        val questionData = QuizQuestions(question,option1,option2,option3,option4,correctOption)
+
+                        database.reference.child("UserProfiles")
+                            .child(firebaseAuth.currentUser!!.uid)
+                            .child("MyQuiz")
+                            .child(quizId.toString())
+                            .child("Questions")
+                            .child(qnu.toString())
+                            .setValue(questionData)
+                            .addOnCompleteListener {
+                                if (it.isSuccessful){
+                                    database.reference.child("JoinRooms")
+                                        .child(quizId.toString())
+                                        .child("Questions")
+                                        .child(qnu.toString())
+                                        .setValue(questionData)
+                                        .addOnCompleteListener {
+                                            binding.mprogress.visibility = View.GONE
+                                            Snackbar.make(view,"Question $qnu added",Snackbar.LENGTH_SHORT).show()
+                                            binding.questionedittxt.text.clear()
+                                            binding.optionAedittxt.text.clear()
+                                            binding.optionBedittxt.text.clear()
+                                            binding.optionCedittxt.text.clear()
+                                            binding.optionDedittxt.text.clear()
+                                            binding.correctOptiontxt.text.clear()
+                                            binding.progressBar1.progress = questionNo
+                                            questionNo++
+                                            binding.questionNumber.text = "Q.No. $questionNo"
+                                            // correct option options me se he hona chahiye
+                                            if(questionNo>totalQuestions){
+                                                binding.questionNumber.text = "Done"
+                                                binding.donelottie.visibility = View.VISIBLE
+                                                binding.addnextQuestionbtn.visibility = View.GONE
+                                                binding.doneQuestionAddingbtn.visibility = View.VISIBLE
+                                                binding.qna.visibility = View.INVISIBLE
+                                            }
+                                        }.addOnFailureListener {
+                                            binding.mprogress.visibility = View.GONE
+
+                                            Snackbar.make(view,"Question $questionNo Add Failed Please Retry",Snackbar.LENGTH_SHORT).show()
                                         }
-                                    }.addOnFailureListener {
-                                        binding.mprogress.visibility = View.GONE
 
-                                        Snackbar.make(view,"Question $questionNo Add Failed Please Retry",Snackbar.LENGTH_SHORT).show()
-                                    }
+                                }
+                                else{
+                                    binding.mprogress.visibility = View.GONE
+                                    Snackbar.make(view,"Question $questionNo Add Failed Please Retry",Snackbar.LENGTH_SHORT).show()
 
+                                }
+                            }.addOnFailureListener {
+                                Snackbar.make(view,"Failed to Add Questions Please Retry",Snackbar.LENGTH_SHORT).show()
                             }
-                            else{
-                                binding.mprogress.visibility = View.GONE
-                                Snackbar.make(view,"Question $questionNo Add Failed Please Retry",Snackbar.LENGTH_SHORT).show()
 
-                            }
-                        }.addOnFailureListener {
-                            Snackbar.make(view,"Failed to Add Questions Please Retry",Snackbar.LENGTH_SHORT).show()
-                        }
+                    }
+                    else{
+                        Snackbar.make(view,"Correct option must be from all the given options",Snackbar.LENGTH_SHORT).show()
+                    }
 
                 }
                 else{
-                    Snackbar.make(view,"Correct option must be from all the given options",Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(view,"All options must be unique",Snackbar.LENGTH_SHORT).show()
                 }
-
             }
             else{
                 Snackbar.make(view,"Please Fill All the Fields",Snackbar.LENGTH_SHORT).show()
@@ -155,6 +161,14 @@ class AddQuestionsFragment : Fragment() {
 
         }
     }
+
+    private fun checkoptions(option1: String, option2: String, option3: String, option4: String): Boolean {
+        if ( option1 != option2 && option1!=option3 && option1!=option4 && option2!=option3 && option2!=option4 && option3!=option4){
+            return true
+        }
+        return false
+    }
+
 
     private fun isCorrectOptionValid(options: Array<String>, correctOption: String): Boolean {
         for (option in options){
