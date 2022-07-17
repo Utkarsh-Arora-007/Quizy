@@ -37,7 +37,7 @@ Quizy Mobile Application is packed with lot of features that allows you to creat
         
 Get your hands on it now.
 
-| [Download](https://github.com/shivenducs1136/Quizy/blob/main/Images/download_button.png) |
+| [Download](https://drive.google.com/drive/folders/1zxto7CBRViEGNzBZi6_UE_FffxGPuktx?usp=sharing) |
 |------------------------------------------------------------------------------------------|
 ****
 
