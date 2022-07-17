@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.databinding.FragmentQuizDetailsBinding
@@ -86,7 +87,7 @@ class QuizDetailsFragment : Fragment() {
                                 duration =" ${child.child("Details").child("duration").value}"
                                 numberOfQuestions =" ${child.child("Details").child("numberOfQuestions").value}"
                                 if(child.child("Details").child("isExpired").value == null){
-                                    if(checkQuizisValidorNot(toDate,toMonth,toYear,toHr,toMin)){
+                                    if(checkQuizisValidorNot(toDate.toInt(),toMonth.toInt(),toYear.toInt(),toHr.toInt(),toMin.toInt())){
                                         isExpired  = false
                                     }
                                     else{
@@ -127,6 +128,7 @@ class QuizDetailsFragment : Fragment() {
         binding.startQuizBtn.setOnClickListener {
             var isAlreadyGiven = false
             binding.mprogresscircle.visibility = View.VISIBLE
+            displayName = binding.quizDisplayNameEditText.text.toString()
             FirebaseDatabase.getInstance().reference
                 .child("LeaderBoard")
                 .child(quizCode)
@@ -136,10 +138,9 @@ class QuizDetailsFragment : Fragment() {
                         if(snapshot.value!=null){
                             binding.mprogresscircle.visibility = View.GONE
                             isAlreadyGiven = true
-                            if (isQuizExist and !isExpired and !isAlreadyGiven){
+                            if (isQuizExist and !isExpired and !isAlreadyGiven and !displayName.isNullOrEmpty()){
                                 var bundle:Bundle = Bundle()
                                 bundle.putString("QuizCode",quizCode)
-                                displayName = binding.quizDisplayNameEditText.text.toString()
                                 database.child(quizCode).child(androidId).child("DisplayName").setValue(displayName)
                                 database.child(quizCode).child(androidId).child("Score").setValue("0")
                                 findNavController().navigate(com.bitwisor.quizy.R.id.action_quizDetailsFragment_to_playQuizFragment,bundle)
@@ -157,10 +158,9 @@ class QuizDetailsFragment : Fragment() {
                         else{
                             binding.mprogresscircle.visibility = View.GONE
                             isAlreadyGiven = false
-                            if (isQuizExist and !isExpired and !isAlreadyGiven){
+                            if (isQuizExist and !isExpired and !isAlreadyGiven and !displayName.isNullOrEmpty()){
                                 var bundle:Bundle = Bundle()
                                 bundle.putString("QuizCode",quizCode)
-                                displayName = binding.quizDisplayNameEditText.text.toString()
                                 database.child(quizCode).child(androidId).child("DisplayName").setValue(displayName)
                                 database.child(quizCode).child(androidId).child("Score").setValue("0")
                                 findNavController().navigate(com.bitwisor.quizy.R.id.action_quizDetailsFragment_to_playQuizFragment,bundle)
@@ -186,53 +186,35 @@ class QuizDetailsFragment : Fragment() {
 
         }
     }
-    private fun checkQuizisValidorNot(toDate:Long,toMonth:Long,toYear:Long,toHr:Long,toMin:Long):Boolean{
+    private fun checkQuizisValidorNot(toDate:Int,toMonth:Int,toYear:Int,toHr:Int,toMin:Int):Boolean{
         val c = Calendar.getInstance()
         val curr_year = c.get(Calendar.YEAR)
         val curr_month = c.get(Calendar.MONTH)
         val curr_day = c.get(Calendar.DAY_OF_MONTH)
         val curr_hour = c.get(Calendar.HOUR_OF_DAY)
         val curr_minute = c.get(Calendar.MINUTE)
-        Log.e("main","curr_day = $curr_day")
-        Log.e("main","$curr_month")
-        Log.e("main","curr_month = $curr_year")
-        Log.e("main","curr_minute = $curr_minute")
-        Log.e("main","curr_hour = $curr_hour")
-        Log.e("main","toDate = $toDate")
-        Log.e("main","toMonth = $toMonth")
-        Log.e("main","toYear = $toYear")
-        Log.e("main","toMin = $toMin")
-        Log.e("main","toHr = $toHr")
-        if (curr_year>toYear){
-            return false
-        }
-        if (curr_year<=toYear.toInt()){
-            if (curr_month>toMonth.toInt()){
+        if (curr_year == toYear && curr_month == toMonth && curr_day == toDate){
+            if (curr_hour>toHr){
                 return false
             }
-            if(curr_month<=toMonth.toInt()){
-                if (curr_day>toDate.toInt()){
-                    return false
-                }
-                if (curr_day<=toDate.toInt()){
-                    if (curr_day == toDate.toInt()){
-                        if (curr_hour>toHr.toInt()){
-                            return false
-                        }
-                        if(curr_hour<=toHr.toInt()){
-                            if (curr_minute>toMin.toInt()){
-                                return false
-                            }
-                            if (curr_minute<=toMin.toInt()){
-                                return true
-                            }
-                        }
-                    }
-                    else{
-                        return true
-                    }
+            else{
+                if (curr_hour<=toHr){
+                    return curr_minute < toMin
                 }
             }
+        }
+        if(curr_month == toMonth && curr_year == toYear) return curr_day <= toDate
+        if (curr_year == toYear){
+            if (curr_month>toMonth){
+                return false
+            }
+            else{
+                return curr_month<=toMonth
+            }
+        }
+        else{
+            Toast.makeText(requireContext(),"Quiz is Expired", Toast.LENGTH_SHORT).show()
+            return false
         }
         return true
     }

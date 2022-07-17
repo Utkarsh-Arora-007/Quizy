@@ -4,11 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Quizy/app/src/main/res/drawable-v24/playbtnbg.xml" value="0.177" />
+        <entry key="..\:/Quizy/app/src/main/res/drawable/graay.xml" value="0.2375" />
+        <entry key="..\:/Quizy/app/src/main/res/drawable/green_bg.xml" value="0.2385" />
+        <entry key="..\:/Quizy/app/src/main/res/drawable/grey_bg.xml" value="0.2385" />
+        <entry key="..\:/Quizy/app/src/main/res/drawable/ic_no_internet_img.xml" value="0.1705" />
+        <entry key="..\:/Quizy/app/src/main/res/drawable/ic_tryagain_btn.xml" value="0.1705" />
         <entry key="..\:/Quizy/app/src/main/res/drawable/white_bg.xml" value="0.194" />
         <entry key="..\:/Quizy/app/src/main/res/font/anton.xml" value="0.2625" />
         <entry key="..\:/Quizy/app/src/main/res/layout/activity_join.xml" value="0.23229166666666667" />
         <entry key="..\:/Quizy/app/src/main/res/layout/activity_login.xml" value="0.23229166666666667" />
         <entry key="..\:/Quizy/app/src/main/res/layout/activity_main.xml" value="0.23229166666666667" />
+        <entry key="..\:/Quizy/app/src/main/res/layout/activity_no_internet.xml" value="0.23229166666666667" />
         <entry key="..\:/Quizy/app/src/main/res/layout/activity_quiz.xml" value="0.23229166666666667" />
         <entry key="..\:/Quizy/app/src/main/res/layout/custom_layout.xml" value="0.23229166666666667" />
         <entry key="..\:/Quizy/app/src/main/res/layout/fragment_add_questions.xml" value="0.2" />
@@ -22,19 +28,12 @@
         <entry key="..\:/Quizy/app/src/main/res/layout/fragment_quiz_details.xml" value="0.21822916666666667" />
         <entry key="..\:/Quizy/app/src/main/res/layout/fragment_result_fragment.xml" value="0.23229166666666667" />
         <entry key="..\:/Quizy/app/src/main/res/layout/fragment_unique_code.xml" value="0.264" />
-        <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/drawable-v24/playbtnbg.xml" value="0.1435" />
-        <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/drawable/green_bg.xml" value="0.1435" />
-        <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/drawable/grey_bg.xml" value="0.1435" />
-        <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/drawable/red_bg.xml" value="0.1435" />
-        <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/layout/fragment_details_per_quiz.xml" value="0.264" />
-        <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/layout/fragment_home.xml" value="0.25608342989571264" />
         <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/layout/fragment_play_quiz.xml" value="0.1" />
         <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/layout/fragment_quiz_details.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/layout/fragment_result_fragment.xml" value="0.264" />
+        <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/layout/fragment_result_fragment.xml" value="0.11851851851851852" />
         <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/layout/fragment_total_quizzes_info.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/layout/fragment_unique_code.xml" value="0.264" />
-        <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/layout/sample_leaderboard_per_quiz.xml" value="0.2" />
-        <entry key="..\:/Users/arora/OneDrive/Documents/GitHub/Quizy/app/src/main/res/layout/sample_quiz_details.xml" value="0.264" />
       </map>
     </option>
   </component>
