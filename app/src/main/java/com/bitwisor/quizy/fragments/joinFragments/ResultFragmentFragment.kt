@@ -98,7 +98,8 @@ class ResultFragmentFragment : Fragment() {
                                             )
                                         )
 
-                                        pieChart.startAnimation();
+                                        pieChart.startAnimation()
+
                                     }
                                     else{
                                         Snackbar.make(view,"Some Error Occured",Snackbar.LENGTH_SHORT).show()
