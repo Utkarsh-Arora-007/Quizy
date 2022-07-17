@@ -12,14 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bitwisor.quizy.Adapters.TotalQuizzesAdapter
 import com.bitwisor.quizy.databinding.FragmentTotalQuizzesInfoBinding
 import com.bitwisor.quizy.utils.TotalQuizzesInfo
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 
 class TotalQuizzesInfoFragment : Fragment() {
     lateinit var binding: FragmentTotalQuizzesInfoBinding
-    lateinit var database: DatabaseReference
-    lateinit var FirebaseDatabase: FirebaseDatabase
     private lateinit var adapter:TotalQuizzesAdapter
     private lateinit var QuizArrayList: ArrayList<TotalQuizzesInfo>
     private lateinit var userRecyclerView: RecyclerView
@@ -43,47 +42,44 @@ class TotalQuizzesInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        FirebaseDatabase = com.google.firebase.database.FirebaseDatabase.getInstance()
         userRecyclerView=binding.totalQuizRView
-        userRecyclerView.layoutManager=LinearLayoutManager(requireContext())
-        userRecyclerView.setHasFixedSize(true)
-
-
-
+        binding.totalProgresscircle.visibility = View.VISIBLE
         QuizArrayList= arrayListOf<TotalQuizzesInfo>()
-        getUserData()
-
-
-
-
-
-    }
-
-    private fun getUserData() {
-        database = com.google.firebase.database.FirebaseDatabase.getInstance().getReference("UserProfiles") .child(FirebaseAuth.getInstance().currentUser!!.uid)
-            .child("MyQuiz")
-
-        database.addValueEventListener(object : ValueEventListener{
+            FirebaseDatabase.getInstance().getReference("UserProfiles") .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                .child("MyQuiz").addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists())
                 {
                     for(userSnapshot in snapshot.children){
-
-                        val user = userSnapshot.getValue(TotalQuizzesInfo::class.java)
-                        QuizArrayList.add(user!!)
+                        val key = userSnapshot.key
+                        val name = userSnapshot.child("Details").child("quizName").value
+                        val op = TotalQuizzesInfo(name.toString(),key)
+                        QuizArrayList.add(op)
                     }
-
+                    binding.totalProgresscircle.visibility = View.GONE
                     userRecyclerView.adapter=TotalQuizzesAdapter(QuizArrayList)
+                    userRecyclerView.layoutManager=LinearLayoutManager(requireContext())
+                    userRecyclerView.setHasFixedSize(true)
+                }
+                else{
+                    Snackbar.make(view,"Some Error Occured",Snackbar.LENGTH_SHORT).show()
                 }
 
             }
 
             override fun onCancelled(error: DatabaseError) {
-
+                Snackbar.make(view,"Some Error Occured",Snackbar.LENGTH_SHORT).show()
             }
 
         })
+
+
+
+
+
     }
+
+
 
 
 }

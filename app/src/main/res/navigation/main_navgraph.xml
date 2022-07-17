@@ -41,5 +41,13 @@
         android:id="@+id/totalQuizzesInfoFragment"
         android:name="com.bitwisor.quizy.fragments.TotalQuizzesInfoFragment"
         android:label="fragment_total_quizzes_info"
-        tools:layout="@layout/fragment_total_quizzes_info" />
+        tools:layout="@layout/fragment_total_quizzes_info" >
+        <action
+            android:id="@+id/action_totalQuizzesInfoFragment_to_detailsPerQuizFragment"
+            app:destination="@id/detailsPerQuizFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsPerQuizFragment"
+        android:name="com.bitwisor.quizy.fragments.DetailsPerQuizFragment"
+        android:label="DetailsPerQuizFragment" />
 </navigation>

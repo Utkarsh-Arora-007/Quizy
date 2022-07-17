@@ -65,13 +65,6 @@ class AddQuestionsFragment : Fragment() {
         }
         binding.addnextQuestionbtn.setOnClickListener {
             val qnu = questionNo
-            if(qnu>=totalQuestions){
-                binding.questionNumber.text = "Done"
-                binding.addnextQuestionbtn.visibility = View.GONE
-                binding.doneQuestionAddingbtn.visibility = View.VISIBLE
-                binding.qna.visibility = View.INVISIBLE
-                binding.donelottie.visibility = View.VISIBLE
-            }
             question = binding.questionedittxt.text.toString()
             option1 = binding.optionAedittxt.text.toString()
             option2 = binding.optionBedittxt.text.toString()
