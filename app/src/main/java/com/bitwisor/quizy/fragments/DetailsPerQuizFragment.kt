@@ -63,7 +63,8 @@ class DetailsPerQuizFragment : Fragment() {
                         userRecyclerView.setHasFixedSize(true)
                     }
                     else{
-                        Snackbar.make(view,"Some Error Occured", Snackbar.LENGTH_SHORT).show()
+                        binding.leaderProgresscircle.visibility = View.GONE
+
                     }
 
                 }

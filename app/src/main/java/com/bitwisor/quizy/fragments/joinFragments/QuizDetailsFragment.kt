@@ -133,13 +133,24 @@ class QuizDetailsFragment : Fragment() {
                         if(snapshot.value!=null){
                             binding.mprogresscircle.visibility = View.GONE
                             isAlreadyGiven = true
-                            if (isQuizExist and !isExpired and !isAlreadyGiven and !displayName.isNullOrEmpty()){
-                                var bundle:Bundle = Bundle()
-                                bundle.putString("QuizCode",quizCode)
-                                database.child(quizCode).child(androidId).child("DisplayName").setValue(displayName)
-                                database.child(quizCode).child(androidId).child("Score").setValue("0")
-                                findNavController().navigate(com.bitwisor.quizy.R.id.action_quizDetailsFragment_to_playQuizFragment,bundle)
-                                Snackbar.make(view,"Quiz id : ${quizCode}",Snackbar.LENGTH_SHORT).show()
+                            !displayName.isNullOrEmpty()
+                            if (isQuizExist and !isAlreadyGiven  ){
+                                if (!isExpired ){
+                                    if(!displayName.isNullOrEmpty()){
+                                        var bundle:Bundle = Bundle()
+                                        bundle.putString("QuizCode",quizCode)
+                                        database.child(quizCode).child(androidId).child("DisplayName").setValue(displayName)
+                                        database.child(quizCode).child(androidId).child("Score").setValue("0")
+                                        findNavController().navigate(com.bitwisor.quizy.R.id.action_quizDetailsFragment_to_playQuizFragment,bundle)
+                                        Snackbar.make(view,"Quiz id : ${quizCode}",Snackbar.LENGTH_SHORT).show()
+                                    }
+                                    else{
+                                        Snackbar.make(view,"Please enter display name",Snackbar.LENGTH_SHORT).show()
+                                    }
+                                }else{
+                                    Snackbar.make(view,"Quiz is Expired",Snackbar.LENGTH_SHORT).show()
+                                }
+
                             }
                             else{
                                 if (isAlreadyGiven){
@@ -153,21 +164,23 @@ class QuizDetailsFragment : Fragment() {
                         else{
                             binding.mprogresscircle.visibility = View.GONE
                             isAlreadyGiven = false
-                            if (isQuizExist and !isExpired and !isAlreadyGiven and !displayName.isNullOrEmpty()){
-                                var bundle:Bundle = Bundle()
-                                bundle.putString("QuizCode",quizCode)
-                                database.child(quizCode).child(androidId).child("DisplayName").setValue(displayName)
-                                database.child(quizCode).child(androidId).child("Score").setValue("0")
-                                findNavController().navigate(com.bitwisor.quizy.R.id.action_quizDetailsFragment_to_playQuizFragment,bundle)
-                                Snackbar.make(view,"Quiz id : ${quizCode}",Snackbar.LENGTH_SHORT).show()
-                            }
-                            else{
-                                if (isAlreadyGiven){
-                                    Snackbar.make(view,"You have already attempted.",Snackbar.LENGTH_SHORT).show()
+                            if (isQuizExist and !isAlreadyGiven  ){
+                                if (!isExpired ){
+                                    if(!displayName.isNullOrEmpty()){
+                                        var bundle:Bundle = Bundle()
+                                        bundle.putString("QuizCode",quizCode)
+                                        database.child(quizCode).child(androidId).child("DisplayName").setValue(displayName)
+                                        database.child(quizCode).child(androidId).child("Score").setValue("0")
+                                        findNavController().navigate(com.bitwisor.quizy.R.id.action_quizDetailsFragment_to_playQuizFragment,bundle)
+                                        Snackbar.make(view,"Quiz id : ${quizCode}",Snackbar.LENGTH_SHORT).show()
+                                    }
+                                    else{
+                                        Snackbar.make(view,"Please enter display name",Snackbar.LENGTH_SHORT).show()
+                                    }
+                                }else{
+                                    Snackbar.make(view,"Quiz is Expired",Snackbar.LENGTH_SHORT).show()
                                 }
-                                else{
-                                    Snackbar.make(view,"Unavailable to Play",Snackbar.LENGTH_SHORT).show()
-                                }
+
                             }
 
                         }

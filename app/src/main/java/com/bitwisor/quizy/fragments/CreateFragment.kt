@@ -52,6 +52,8 @@ class CreateFragment : Fragment() {
     var quizIdList = ArrayList<String>()
     var x = 0
     var clicked = false
+    var fromTime = false
+    var toTime = false
     lateinit var database: DatabaseReference
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -132,6 +134,7 @@ class CreateFragment : Fragment() {
                         }
                         fromHr = hourOfDay
                         fromMin = minute
+                        fromTime = true
                         binding.fromTimetxt.text = formattedTime
                     }
                 }
@@ -180,6 +183,7 @@ class CreateFragment : Fragment() {
                         }
                         toHr = hourOfDay
                         toMin = minute
+                        toTime = true
                         binding.toTimetxt.text = formattedTime
                     }
                 }
@@ -236,50 +240,73 @@ class CreateFragment : Fragment() {
             val quizName = binding.quizNameInputEdittext.text.toString()
             val numberOfQ = binding.quizNumberofquestionInputEdittext.text.toString()
             val duration= binding.quizDurationInputEdittext.text.toString()
-            if (fromflag){
-                if (toflag){
-                    if(!quizName.isNullOrEmpty() && !numberOfQ.isNullOrEmpty() && !duration.isNullOrEmpty()){
-                        if (checkDuration(duration.toInt())  ){
-                            if(NewValidationCondition(fromDay,fromMonth,fromYear,toDay,toMonth,toYear,fromHr,fromMin,toHr,toMin)
-                               ){
-                                binding.createProgresscircle.visibility = View.VISIBLE
-                                val quizInfo = QuizInfoOfUser(quizName,quizId.toString(),fromDay,fromMonth,fromYear,toMonth,toDay,toYear,fromHr,fromMin,toHr,toMin,duration,numberOfQuestions.toString(),false)
+            if (fromflag ){
+                    if (fromTime){
+                        if (toflag){
+                            if (toTime){
+                                if(!quizName.isNullOrEmpty() && !numberOfQ.isNullOrEmpty() && !duration.isNullOrEmpty()){
+                                    if (checkDuration(duration.toInt())  ){
+                                        if(NewValidationCondition(fromDay,fromMonth,fromYear,toDay,toMonth,toYear,fromHr,fromMin,toHr,toMin)
+                                        ){
+                                            if(addQuestionCheck()){
+                                                binding.createProgresscircle.visibility = View.VISIBLE
+                                                val quizInfo = QuizInfoOfUser(quizName,quizId.toString(),fromDay,fromMonth,fromYear,toMonth,toDay,toYear,fromHr,fromMin,toHr,toMin,duration,numberOfQuestions.toString(),false)
 
-                                database.child("JoinRooms")
-                                    .child(quizId.toString())
-                                    .child("Details")
-                                    .setValue(quizInfo)
-                                database = database.child("UserProfiles")
-                                    .child(FirebaseAuth.getInstance().currentUser!!.uid)
-                                    .child("MyQuiz")
-                                    .child(quizId.toString())
-                                    .child("Details")
-                                database.setValue(quizInfo).addOnCompleteListener {
-                                    binding.createProgresscircle.visibility = View.GONE
-                                    val unique_code=quizId.toString()
-                                    val bundle = Bundle()
-                                    bundle.putString("uniqueId",unique_code)
-                                    findNavController().navigate(R.id.action_createFragment_to_uniqueCode,bundle)
+                                                database.child("JoinRooms")
+                                                    .child(quizId.toString())
+                                                    .child("Details")
+                                                    .setValue(quizInfo)
+                                                database = database.child("UserProfiles")
+                                                    .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                                                    .child("MyQuiz")
+                                                    .child(quizId.toString())
+                                                    .child("Details")
+                                                database.setValue(quizInfo).addOnCompleteListener {
+                                                    binding.createProgresscircle.visibility = View.GONE
+                                                    val unique_code=quizId.toString()
+                                                    val bundle = Bundle()
+                                                    bundle.putString("uniqueId",unique_code)
+                                                    findNavController().navigate(R.id.action_createFragment_to_uniqueCode,bundle)
 
-                                }.addOnFailureListener {
-                                    Snackbar.make(view,"Error While creating quiz",Snackbar.LENGTH_SHORT).show()
+                                                }.addOnFailureListener {
+                                                    Snackbar.make(view,"Error While creating quiz",Snackbar.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                            else{
+                                                Snackbar.make(view,"Please add all questions",Snackbar.LENGTH_SHORT).show()
+
+                                            }
+                                        }
+                                        else{
+                                            Snackbar.make(view,"Please enter a Valid From and To Date",Snackbar.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                    else{
+                                        Snackbar.make(view,"Duration must be between 1 and 60 min",Snackbar.LENGTH_SHORT).show()
+                                    }
+                                }
+                                else{
+                                    Snackbar.make(view,"Please fill the required details",Snackbar.LENGTH_SHORT).show()
                                 }
                             }
                             else{
-                                Snackbar.make(view,"Please enter a Valid From and To Date",Snackbar.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(),"Please Enter To Time",Toast.LENGTH_SHORT).show()
+
                             }
                         }
-                        else{
-                            Snackbar.make(view,"Duration must be between 1 and 60 min",Snackbar.LENGTH_SHORT).show()
-                        }
-                    }
+
                     else{
-                        Snackbar.make(view,"Please fill the required details",Snackbar.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),"Please Enter To Date",Toast.LENGTH_SHORT).show()
                     }
-                }
-                else{
-                    Toast.makeText(requireContext(),"Please Enter To Date",Toast.LENGTH_SHORT).show()
-                }
+
+                    }else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Please Enter From Time",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
             }
             else{
                 Toast.makeText(requireContext(),"Please Enter From Date",Toast.LENGTH_SHORT).show()
@@ -288,8 +315,17 @@ class CreateFragment : Fragment() {
 
     }
 
+    private fun addQuestionCheck(): Boolean {
+
+        if(clicked == false){
+            return false
+        }
+        return true
+
+    }
+
     private fun checkDuration(dur: Int): Boolean {
-        if(dur>=1 && dur <=60){
+        if(dur>1 && dur <=60){
             return true
         }
         else{

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.R
 import com.bitwisor.quizy.databinding.FragmentJoinHomeBinding
+import com.google.android.material.snackbar.Snackbar
 import java.net.InetAddress
 
 class JoinHomeFragment : Fragment() {
@@ -31,7 +32,12 @@ class JoinHomeFragment : Fragment() {
             quizid = binding.quizRoomCodeEditText.text.toString()
             var bundle= Bundle()
             bundle.putString("QuizId",quizid)
-            findNavController().navigate(R.id.action_joinHomeFragment_to_quizDetailsFragment,bundle)
+            if (!quizid.isNullOrEmpty() and (quizid.length == 4)){
+                findNavController().navigate(R.id.action_joinHomeFragment_to_quizDetailsFragment,bundle)
+            }
+            else{
+                Snackbar.make(view,"Please enter a valid code",Snackbar.LENGTH_SHORT).show()
+            }
         }
 
     }

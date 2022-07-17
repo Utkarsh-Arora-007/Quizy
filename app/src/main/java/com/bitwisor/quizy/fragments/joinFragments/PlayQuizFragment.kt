@@ -46,7 +46,7 @@ class PlayQuizFragment : Fragment(),View.OnClickListener {
     var selectedOptionPosition = 0
     var correct_answerInt = 0
     var START_TIME_IN_MILLIS by Delegates.notNull<Long>()
-    lateinit var mCountDownTimer:CountDownTimer
+    var mCountDownTimer:CountDownTimer?= null
     var mTimeLeftInMillis by Delegates.notNull<Long>()
     var mTimerRunning:Boolean = false
     var questionList=ArrayList<QuizQuestions>()
@@ -137,6 +137,7 @@ class PlayQuizFragment : Fragment(),View.OnClickListener {
                                     binding.playquizMprogress.visibility = View.GONE
                                     displayName =" ${child.child(androidid).child("DisplayName").value}"
                                     score ="${child.child(androidid).child("Score").value}".toInt()
+
                                     break
                                 }
                             }
@@ -198,12 +199,12 @@ class PlayQuizFragment : Fragment(),View.OnClickListener {
         questionNumber = numberOfQuestions+1
         var bundle = Bundle()
         bundle.putString("QuizCode",quizCode)
-        pauseTimer()
+
         findNavController().navigate(R.id.action_playQuizFragment_to_resultFragmentFragment,bundle)
     }
 
     private fun pauseTimer() {
-        mCountDownTimer.cancel()
+        mCountDownTimer?.cancel()
         mTimerRunning = false
 //        mButtonStartPause.setText("Start")
 //        mButtonReset.setVisibility(View.VISIBLE)
@@ -304,7 +305,7 @@ class PlayQuizFragment : Fragment(),View.OnClickListener {
     private fun setQuestion(){
         if(questionNumber>numberOfQuestions){
             Snackbar.make(binding.palyqwew,"Quiz already given", Snackbar.LENGTH_SHORT).show()
-            pauseTimer()
+
             findNavController().popBackStack()
         }else{
 

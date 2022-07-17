@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.net.InetAddress
 
@@ -75,5 +76,13 @@ class MainActivity : AppCompatActivity() {
             startActivity(i)
             finishAffinity()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val i = Intent(this,MainActivity::class.java)
+        Toast.makeText(this,"Creating Quiz Cancelled", Toast.LENGTH_SHORT).show()
+        startActivity(i)
+        finish()
     }
 }

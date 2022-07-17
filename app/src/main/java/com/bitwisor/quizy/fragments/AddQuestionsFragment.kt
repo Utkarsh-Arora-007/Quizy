@@ -1,24 +1,20 @@
 package com.bitwisor.quizy.fragments
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.LoginActivity
 import com.bitwisor.quizy.MainActivity
-import com.bitwisor.quizy.R
 import com.bitwisor.quizy.databinding.FragmentAddQuestionsBinding
 import com.bitwisor.quizy.utils.QuizQuestions
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 
@@ -69,7 +65,10 @@ class AddQuestionsFragment : Fragment() {
             val i = Intent(requireActivity(),LoginActivity::class.java)
             startActivity(i)
             requireActivity().finish()
-        }
+        }//You need to add the following line for this solution to work; thanks skayred
+        //You need to add the following line for this solution to work; thanks skayred
+        // .getView().setFocusableInTouchMode(true)
+
         binding.addnextQuestionbtn.setOnClickListener {
             val qnu = questionNo
 
