@@ -15,7 +15,7 @@ After Quiz is being created you can share the Quiz link and through this Link th
  Solving a problem may be the most important part of a mission, But having the power in our hands to visualise and track the progress is important as well. That is why we came up with our mobile application. QUIZY Application is a dynamic mobile application built completely on Android Studio.
 ***
 # App Permissions
-There is no extra permissions required. There is just a requirement of an active [INTERNET]() coonection.
+There is no extra permissions required. There is just a requirement of an active [INTERNET](https://en.wikipedia.org/wiki/Internet) coonection.
 ***
 ## Features
 - Signup and Login via Google (One Tap Login)
