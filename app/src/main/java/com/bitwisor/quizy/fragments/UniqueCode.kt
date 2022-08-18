@@ -77,10 +77,30 @@ class UniqueCode : Fragment() {
 
     }
 
+    private fun openGbWhatsapp() {
+        val whatsappIntent = Intent(Intent.ACTION_SEND)
+        whatsappIntent.type = "text/plain"
+        whatsappIntent.setPackage("com.gbwhatsapp")
+        whatsappIntent.putExtra(
+            Intent.EXTRA_TEXT,
+            "https://www.quizy.com/${uniqueCode}"
+        )
+        try {
+            Objects.requireNonNull(requireActivity())?.startActivity(whatsappIntent)
+        } catch (ex: ActivityNotFoundException) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=com.gbwhatsapp")
+                )
+            )
+        }
+    }
+
     private fun openInstagram() {
         val instagramIntent = Intent(Intent.ACTION_SEND)
         instagramIntent.type = "text/plain"
-        instagramIntent.setPackage("com.instagram")
+        instagramIntent.setPackage("com.instagram.android")
         instagramIntent.putExtra(
             Intent.EXTRA_TEXT,
             "https://www.quizy.com/${uniqueCode}"
@@ -91,7 +111,7 @@ class UniqueCode : Fragment() {
             startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("http://play.google.com/store/apps/details?id=com.instagram")
+                    Uri.parse("http://play.google.com/store/apps/details?id=com.instagram.android")
                 )
             )
         }
@@ -102,7 +122,7 @@ class UniqueCode : Fragment() {
     private fun openTelegram() {
         val telegramIntent = Intent(Intent.ACTION_SEND)
         telegramIntent.type = "text/plain"
-        telegramIntent.setPackage("com.telegram")
+        telegramIntent.setPackage("org.telegram.messenger")
         telegramIntent.putExtra(
             Intent.EXTRA_TEXT,
             "https://www.quizy.com/${uniqueCode}"
@@ -113,7 +133,7 @@ class UniqueCode : Fragment() {
             startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("http://play.google.com/store/apps/details?id=com.telegram")
+                    Uri.parse("http://play.google.com/store/apps/details?id=org.telegram.messenger")
                 )
             )
         }

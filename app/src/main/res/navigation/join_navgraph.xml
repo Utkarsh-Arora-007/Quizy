@@ -37,4 +37,9 @@
         android:name="com.bitwisor.quizy.fragments.joinFragments.ResultFragmentFragment"
         android:label="fragment_result_fragment"
         tools:layout="@layout/fragment_result_fragment" />
+    <fragment
+        android:id="@+id/currentLeaderboardFragment"
+        android:name="com.bitwisor.quizy.fragments.joinFragments.CurrentLeaderboardFragment"
+        android:label="fragment_current_leaderboard"
+        tools:layout="@layout/fragment_current_leaderboard" />
 </navigation>

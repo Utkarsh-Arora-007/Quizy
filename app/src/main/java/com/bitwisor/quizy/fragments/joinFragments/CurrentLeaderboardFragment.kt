@@ -1,69 +1,60 @@
-package com.bitwisor.quizy.fragments
+package com.bitwisor.quizy.fragments.joinFragments
 
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.addCallback
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bitwisor.quizy.Adapters.CurrentLeaderBoardAdapter
 import com.bitwisor.quizy.Adapters.DetailsPerQuizAdapter
-import com.bitwisor.quizy.MainActivity
-import com.bitwisor.quizy.databinding.FragmentDetailsPerQuizBinding
+import com.bitwisor.quizy.R
+import com.bitwisor.quizy.databinding.FragmentCurrentLeaderboardBinding
 import com.bitwisor.quizy.utils.DetailsPerQuiz
 import com.google.android.material.snackbar.Snackbar
-import com.google.api.Page
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.itextpdf.text.Document
 import com.itextpdf.text.Paragraph
-import com.itextpdf.text.pdf.PdfDocument
 import com.itextpdf.text.pdf.PdfWriter
-import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DetailsPerQuizFragment : Fragment() {
-    lateinit var binding: FragmentDetailsPerQuizBinding
-    private lateinit var adapter: DetailsPerQuizAdapter
+class CurrentLeaderboardFragment : Fragment() {
+
+    lateinit var binding : FragmentCurrentLeaderboardBinding
+    var quizCode=""
+    private lateinit var adapter: CurrentLeaderBoardAdapter
     private lateinit var detailsArrayList: ArrayList<DetailsPerQuiz>
     private lateinit var userRecyclerView: RecyclerView
     private val STORAGE_CODE = 1001
     var quizId=""
-    lateinit var export_pdf:ImageView
+    lateinit var export_pdf: ImageView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentDetailsPerQuizBinding.inflate(layoutInflater)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
-            val i = Intent(requireActivity(), MainActivity::class.java)
-            startActivity(i)
-            requireActivity().finish()
-        }
+    ): View? {
+        binding = FragmentCurrentLeaderboardBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userRecyclerView=binding.mrecview
+        var bundle = arguments
+        if (bundle!=null){
+            quizCode = bundle.getString("QuizCode","5154")
+        }
         binding.leaderProgresscircle.visibility = View.VISIBLE
         detailsArrayList= arrayListOf<DetailsPerQuiz>()
         export_pdf = binding.exportPdf
@@ -85,10 +76,7 @@ class DetailsPerQuizFragment : Fragment() {
             }
 
         }
-        var bundle = arguments
-        if (bundle!=null){
-            quizId = bundle.getString("QuizId","0000").toString()
-        }
+
         try{
             FirebaseDatabase.getInstance().getReference("LeaderBoard")
                 .child(quizId)
@@ -109,7 +97,7 @@ class DetailsPerQuizFragment : Fragment() {
                                 binding.nothingtoshowlottie.visibility = View.GONE
                             }
                             binding.leaderProgresscircle.visibility = View.GONE
-                            userRecyclerView.adapter=DetailsPerQuizAdapter(detailsArrayList)
+                            userRecyclerView.adapter= CurrentLeaderBoardAdapter(detailsArrayList)
                             userRecyclerView.layoutManager= LinearLayoutManager(requireContext())
                             userRecyclerView.setHasFixedSize(true)
                         }
@@ -128,19 +116,20 @@ class DetailsPerQuizFragment : Fragment() {
                 })
         }
         catch (e:java.lang.Exception){
-            Toast.makeText(requireContext(),"${e.toString()}",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),"${e.toString()}", Toast.LENGTH_SHORT).show()
         }
+
     }
 
     private fun savePDF() {
         val mDoc = Document()
         val mFileName = SimpleDateFormat("yyMMdd_HHmmss", Locale.getDefault())
-                    .format(System.currentTimeMillis())
+            .format(System.currentTimeMillis())
         val mFilePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/" + mFileName + ".pdf"
         Log.e("PATH",mFilePath.toString())
 
         try {
-            PdfWriter.getInstance(mDoc,FileOutputStream(mFilePath))
+            PdfWriter.getInstance(mDoc, FileOutputStream(mFilePath))
             mDoc.open()
             mDoc.addTitle("Quiz App")
             val data = detailsArrayList
@@ -179,5 +168,4 @@ class DetailsPerQuizFragment : Fragment() {
             }
         }
     }
-
 }

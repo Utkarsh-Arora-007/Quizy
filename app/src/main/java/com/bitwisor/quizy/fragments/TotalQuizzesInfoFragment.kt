@@ -34,7 +34,7 @@ class TotalQuizzesInfoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentTotalQuizzesInfoBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -44,6 +44,7 @@ class TotalQuizzesInfoFragment : Fragment() {
 
         userRecyclerView=binding.totalQuizRView
         binding.totalProgresscircle.visibility = View.VISIBLE
+        binding.totalquizToshowlottie.visibility = View.GONE
         QuizArrayList= arrayListOf<TotalQuizzesInfo>()
             FirebaseDatabase.getInstance().getReference("UserProfiles") .child(FirebaseAuth.getInstance().currentUser!!.uid)
                 .child("MyQuiz").addValueEventListener(object : ValueEventListener{
@@ -62,7 +63,8 @@ class TotalQuizzesInfoFragment : Fragment() {
                     userRecyclerView.setHasFixedSize(true)
                 }
                 else{
-                    Snackbar.make(view,"Some Error Occured",Snackbar.LENGTH_SHORT).show()
+                    binding.totalProgresscircle.visibility = View.GONE
+                    binding.totalquizToshowlottie.visibility = View.VISIBLE
                 }
 
             }

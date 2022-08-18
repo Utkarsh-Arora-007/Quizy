@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.LoginActivity
@@ -19,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase
 
 
 class AddQuestionsFragment : Fragment() {
-    lateinit var binding:FragmentAddQuestionsBinding
+    lateinit var binding: FragmentAddQuestionsBinding
     var question =""
     var option1 =""
     var option2 =""
@@ -35,8 +37,13 @@ class AddQuestionsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAddQuestionsBinding.inflate(layoutInflater)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+                val i = Intent(requireActivity(), MainActivity::class.java)
+                startActivity(i)
+                requireActivity().finish()
+        }
 
         return binding.root
     }
@@ -127,7 +134,6 @@ class AddQuestionsFragment : Fragment() {
                                             }
                                         }.addOnFailureListener {
                                             binding.mprogress.visibility = View.GONE
-
                                             Snackbar.make(view,"Question $questionNo Add Failed Please Retry",Snackbar.LENGTH_SHORT).show()
                                         }
 

@@ -1,12 +1,16 @@
 package com.bitwisor.quizy.fragments.joinFragments
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bitwisor.quizy.MainActivity
@@ -17,8 +21,14 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.itextpdf.text.Document
+import com.itextpdf.text.Paragraph
+import com.itextpdf.text.pdf.PdfWriter
 import org.eazegraph.lib.charts.PieChart
 import org.eazegraph.lib.models.PieModel
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class ResultFragmentFragment : Fragment() {
@@ -30,6 +40,7 @@ class ResultFragmentFragment : Fragment() {
     var score:String =""
     var quizCode=""
     var androidId=""
+    var STORAGE_CODE = 1001
     lateinit var pieChart:PieChart
     lateinit var outOfScore:String
     override fun onCreateView(
@@ -59,6 +70,7 @@ class ResultFragmentFragment : Fragment() {
             startActivity(i)
             requireActivity().finishAffinity()
         }
+
         Log.e("MYQUIZCODE",quizCode)
         FirebaseDatabase.getInstance().reference
             .child("JoinRooms")
@@ -90,7 +102,22 @@ class ResultFragmentFragment : Fragment() {
                                         binding.resultQuizAvailtxtview.text = outOfScore
 
 
+                                        binding.constraintLayout.setOnClickListener {
+                                            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
+                                            {
+                                                if(requireContext()!!.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
+                                                    val permission= arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                                    requestPermissions(permission,STORAGE_CODE)
 
+                                                }else{
+                                                    savePDF()
+                                                }
+                                            }
+                                            else
+                                            {
+                                                savePDF()
+                                            }
+                                        }
 
 
                                         pieChart.addPieSlice(
@@ -132,6 +159,52 @@ class ResultFragmentFragment : Fragment() {
 
             })
 
+    }
+
+    private fun savePDF() {
+        val mDoc = Document()
+        val mFileName = SimpleDateFormat("yyMMdd_HHmmss", Locale.getDefault())
+            .format(System.currentTimeMillis())
+        val mFilePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/" + mFileName + ".pdf"
+        Log.e("PATH",mFilePath.toString())
+
+        try {
+            PdfWriter.getInstance(mDoc, FileOutputStream(mFilePath))
+            mDoc.open()
+            mDoc.addTitle("Quiz App")
+            mDoc.addAuthor("Quizy App")
+            mDoc.add(Paragraph("Your Score Card"))
+            mDoc.add(Paragraph("Quiz Name : ${quizName} QuizID : ${quizCode}"))
+            mDoc.add(Paragraph("Quiz taker Name : ${displayName}"))
+            mDoc.add(Paragraph("Score : ${score}"))
+            mDoc.close()
+            Toast.makeText(requireContext(),"${mFileName}.pdf \n is created to \n ${mFilePath}",
+                Toast.LENGTH_SHORT).show()
+
+        }
+        catch(e:Exception){
+            Log.e("Exception",e.toString())
+            Toast.makeText(requireContext(), ""+e.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when(requestCode){
+            STORAGE_CODE->{
+                if(grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    savePDF()
+                }
+                else{
+                    Toast.makeText(requireContext(),"Permission Denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
 

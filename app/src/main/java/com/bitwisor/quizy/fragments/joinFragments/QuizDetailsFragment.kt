@@ -197,7 +197,7 @@ class QuizDetailsFragment : Fragment() {
     private fun checkQuizisValidorNot(toDate:Int,toMonth:Int,toYear:Int,toHr:Int,toMin:Int):Boolean{
         val c = Calendar.getInstance()
         val curr_year = c.get(Calendar.YEAR)
-        val curr_month = c.get(Calendar.MONTH)
+        val curr_month = c.get(Calendar.MONTH)+1
         val curr_day = c.get(Calendar.DAY_OF_MONTH)
         val curr_hour = c.get(Calendar.HOUR_OF_DAY)
         val curr_minute = c.get(Calendar.MINUTE)
@@ -207,7 +207,12 @@ class QuizDetailsFragment : Fragment() {
             }
             else{
                 if (curr_hour<=toHr){
-                    return curr_minute < toMin
+                    return if (curr_hour == toHr){
+                        curr_minute < toMin
+                    } else{
+                        true
+                    }
+
                 }
             }
         }
